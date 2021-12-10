@@ -1,5 +1,5 @@
 var login = require('./login')
-const axios = require('axios')
+const axios = require('./axios')
 
 
 const order = {
@@ -50,7 +50,7 @@ const order = {
                      "$":"2"
                   },
                   "VLRUNIT":{
-                     "$":"201"
+                     "$":"203"
                   },
                   "PERCDESC":{
                      "$":"0"
@@ -69,14 +69,12 @@ const order = {
 login.then((res) => {
 	var session = res
 	console.log ('session', session)
-    const urlPed = axios.create({
-      baseURL: `http://192.168.1.56:8280/mgecom/service.sbr?serviceName=CACSP.incluirNota&mgeSession=${session}&outputType=json`
-    });
+    
 
 async function incluirPed (req) {
 
   try{
-    const {data} = await urlPed.post(null, order);
+    const {data} = await axios.post(`http://192.168.1.56:8280/mgecom/service.sbr?serviceName=CACSP.incluirNota&mgeSession=${session}&outputType=json`, order);
     var dados = data;
     console.log('data', data)
   } catch(error) {
