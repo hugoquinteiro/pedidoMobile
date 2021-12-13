@@ -1,0 +1,60 @@
+<%- include ('./partials/header.ejs') %>
+<body>
+    <%- include ('./partials/navbar.ejs') %>
+      <h1>Comercial - Pedido</h1>
+
+       <!-- Accordion -->
+  <div "container-fluid">
+    <div class="mb-5" id="accordion">
+
+          <div class="card">
+            <div class="card-header bg-dark text-light" id="pergunta2">
+                <h5 class="mb-0 text-center" data-toggle="collapse" data-target="#pro">
+                        MQ PROFESSIONAL
+                </h5>
+            </div>
+            
+            <div class="collapse" id="pro" data-parent="#accordion">
+                <div class="container-fluid">
+                    <div class="row">
+                      <% produto.forEach(produtos => { %>
+                          <div class="card-body col-12 col-lg-6 bg-ligth" id="itens">
+                              <!-- Teste para inserir imagem -->
+                              <!-- <img src="/img/{{codprod}}.png"  class="" width="80" height="40"> --}} -->
+                              <%= produtos.descrprod %>  
+                          <span id="span"><strong>$<%= produtos.vlrvenda %></strong></span>
+                          <!-- <input type="text" name="codprod" value={{codprod}} hidden/> -->
+                          <!-- <button key="{{codprod}},{{descrprod}},{{vlrvenda}},0,{{codbarra}}" class=" btn btn-success" id="btnAdd">+</button> -->
+                          </div>
+                      <%})%> 
+                    </div>
+                  </div> 
+            </div>
+          </div>
+    </div>
+
+</div>
+
+
+{{!-- CARD FORCE --}}
+<div class="card" id="card">
+    <div class="card-header bg-danger" id="pergunta1" >
+        <h5 class="mb-0 text-center" data-toggle="collapse" data-target="#force">
+                FORCE BARBER
+        </h5>
+    </div>
+    
+    <div class="collapse" id="force" data-parent="#accordion">
+        <div class="container-fluid">
+            <div class="row">
+      
+                  <div class="card-body col-12 col-lg-6" id="itens">teste 01</div>
+                  <div class="card-body col-12 col-lg-6" id="itens">teste 02</div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+</body>
+<%- include ('./partials/footer.ejs') %>
