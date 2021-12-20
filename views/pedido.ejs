@@ -3,58 +3,31 @@
     <%- include ('./partials/navbar.ejs') %>
       <h1>Comercial - Pedido</h1>
 
-       <!-- Accordion -->
-  <div "container-fluid">
-    <div class="mb-5" id="accordion">
-
-          <div class="card">
-            <div class="card-header bg-dark text-light" id="pergunta2">
-                <h5 class="mb-0 text-center" data-toggle="collapse" data-target="#pro">
-                        MQ PROFESSIONAL
-                </h5>
-            </div>
-            
-            <div class="collapse" id="pro" data-parent="#accordion">
-                <div class="container-fluid">
-                    <div class="row">
-                      <% produto.forEach(produtos => { %>
-                          <div class="card-body col-12 col-lg-6 bg-ligth" id="itens">
-                              <!-- Teste para inserir imagem -->
-                              <!-- <img src="/img/{{codprod}}.png"  class="" width="80" height="40"> --}} -->
-                              <%= produtos.descrprod %>  
-                          <span id="span"><strong>$<%= produtos.vlrvenda %></strong></span>
-                          <!-- <input type="text" name="codprod" value={{codprod}} hidden/> -->
-                          <!-- <button key="{{codprod}},{{descrprod}},{{vlrvenda}},0,{{codbarra}}" class=" btn btn-success" id="btnAdd">+</button> -->
-                          </div>
-                      <%})%> 
-                    </div>
-                  </div> 
-            </div>
-          </div>
-    </div>
-
-</div>
-
-
-{{!-- CARD FORCE --}}
-<div class="card" id="card">
-    <div class="card-header bg-danger" id="pergunta1" >
-        <h5 class="mb-0 text-center" data-toggle="collapse" data-target="#force">
-                FORCE BARBER
-        </h5>
-    </div>
-    
-    <div class="collapse" id="force" data-parent="#accordion">
-        <div class="container-fluid">
-            <div class="row">
-      
-                  <div class="card-body col-12 col-lg-6" id="itens">teste 01</div>
-                  <div class="card-body col-12 col-lg-6" id="itens">teste 02</div>
-            </div>
+<!-- Acordion Loop -->
+<% var marca = "Vazio";
+    produto.forEach(produtos => {
+        while (marca != produtos.marca){
+            marca = produtos.marca
+        %>
+<div class="accordion" id="accordionMarca" >  
+    <!--  -->
+    <div class="accordion-item">
+        <h2 class="accordion-header bg-dark text-light p-3 text-center" id="<%=marca.trim() %>" data-bs-toggle="collapse" data-bs-target="#<%=marca.trim() %>" aria-expanded="true" aria-controls="<%=marca.trim() %>">
+            <%= marca %>
+        </h2>
+        <div id="<%=marca.trim() %>" class="accordion-collapse collapse" aria-labelledby="<%=marca.trim() %>" data-bs-parent="accordionMarca">
+            <div class="row accordion-body">
+                <div class="row">
+                    <%= produtos.descrprod %>
+                </div>
+            </div>    
         </div>
+
     </div>
-    
 </div>
+<% }
+    })%> 
+
 
 </body>
 <%- include ('./partials/footer.ejs') %>

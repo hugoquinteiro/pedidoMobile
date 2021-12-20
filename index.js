@@ -18,7 +18,7 @@ app.get("/",(req, res) => {
 //Pedido
 app.get("/pedido",(req, res) => {
 
-  select('produto', 'descrprod').then(produtos => {
+  select('produto', 'marca').then(produtos => {
 
     console.log(produtos)
     // produtos.forEach(function (valor, indice){
