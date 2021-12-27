@@ -28,6 +28,12 @@
 <% }
     })%> 
 
+    <div>
+        <% produto.forEach(x => { %>
+            <h2><%= x.marca %></h2>
+        <% }) %>
+    </div>
+
 
 </body>
 <%- include ('./partials/footer.ejs') %>

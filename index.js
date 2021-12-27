@@ -15,31 +15,39 @@ app.get("/",(req, res) => {
   res.render('index')
 });
 
+var temp = {}
+
+temp.force = [
+              {prod:123, vlrvenda: 10,descrprod: 'Prod Force'},
+              {prod:321, vlrvenda: 200,descrprod: 'Force 2'},
+],
+temp.mqPro = [{prod:456,vlrvenda: 599,descrprod: 'Prod MQ PRO'}]              
+
 //Pedido
 app.get("/pedido",(req, res) => {
 
   select('produto', 'marca').then(produtos => {
+    var v_marca 
+    var marcas = []
+    var tempMarcas = {}
+    var i = 0
+    produtos.forEach(function (valor, indice){
+      if(v_marca!=produtos[indice].marca){
+        //marcas.push(produtos[indice].marca)
+        tempMarcas = produtos[indice].marca
+        i++
+        marcas.push({tempMarcas})
+      }
+      v_marca = produtos[indice].marca
+      
+    })
+    //console.log(produtos)
+    
+    //console.log(marcas)
 
-    console.log(produtos)
-    // produtos.forEach(function (valor, indice){
-    //   valor.vlrvenda2 = parseFloat(valor.vlrvenda).toLocaleString('pt-br', {minimumFractionDigits: 2, maximumFractionDigits:2})
-    //  // console.log(valor.vlrvenda2)
-    //   switch(valor.marca){
-    //     case 'FORCE BARB': marcaForce.push(valor)
-    //     break
-    //     case 'MQ BEAUTY' : marcaBeauty.push(valor) 
-    //     break
-    //     case 'MQ ESCOVAS' : marcaEscovas.push(valor) 
-    //     break
-    //     case 'MQ PRO' : marcaPro.push(valor) 
-    //     break
-    //     case 'PARLUX' : marcaParlux.push(valor) 
-    //     break
-    //   }
 
-    // })
-    //console.log(marcaBeauty)
-    res.render('pedido', {produto:produtos})
+    console.log({produto : produtos, marca: marcas})
+    res.render('pedido', { marca: marcas, produto : produtos})
   })
 
 });
