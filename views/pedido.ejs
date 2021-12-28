@@ -1,39 +1,69 @@
 <%- include ('./partials/header.ejs') %>
 <body>
     <%- include ('./partials/navbar.ejs') %>
-      <h1>Comercial - Pedido</h1>
 
+<div class="container">
 <!-- Acordion Loop -->
-<% var marca = "Vazio";
-    produto.forEach(produtos => {
-        while (marca != produtos.marca){
-            marca = produtos.marca
-        %>
-<div class="accordion" id="accordionMarca" >  
-    <!--  -->
-    <div class="accordion-item">
-        <h2 class="accordion-header bg-dark text-light p-3 text-center" id="<%=marca.trim() %>" data-bs-toggle="collapse" data-bs-target="#<%=marca.trim() %>" aria-expanded="true" aria-controls="<%=marca.trim() %>">
-            <%= marca %>
-        </h2>
-        <div id="<%=marca.trim() %>" class="accordion-collapse collapse" aria-labelledby="<%=marca.trim() %>" data-bs-parent="accordionMarca">
-            <div class="row accordion-body">
-                <div class="row">
-                    <%= produtos.descrprod %>
-                </div>
-            </div>    
-        </div>
+<%  var v_marca 
+    //console.log(produto)
+    console.log(produto[0].marca)
+    produto.forEach(function(val,indice) {
+      if(v_marca!=produto[indice].marca){
+%>
 
-    </div>
+  <h2>
+      <%= produto[indice].marca %>
+  </h2>
+  <% }
+      v_marca = produto[indice].marca
+  %>
+
+  <div class="row"><%= indice +'-'+ produto[indice].descrprod %></div>
+    
+ <% })%> 
+
 </div>
-<% }
-    })%> 
 
-    <div>
-        <% produto.forEach(x => { %>
-            <h2><%= x.marca %></h2>
-        <% }) %>
+
+
+<div class="accordion" id="accordionExample">
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingOne">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+        Accordion Item #1
+      </button>
+    </h2>
+    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+        <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+      </div>
     </div>
-
+  </div>
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingTwo">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+        Accordion Item #2
+      </button>
+    </h2>
+    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+        <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+      </div>
+    </div>
+  </div>
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="headingThree">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+        Accordion Item #3
+      </button>
+    </h2>
+    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+        <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+      </div>
+    </div>
+  </div>
+</div>
 
 </body>
 <%- include ('./partials/footer.ejs') %>

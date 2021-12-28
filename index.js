@@ -46,8 +46,8 @@ app.get("/pedido",(req, res) => {
     //console.log(marcas)
 
 
-    console.log({produto : produtos, marca: marcas})
-    res.render('pedido', { marca: marcas, produto : produtos})
+    //console.log({produto : produtos, marca: marcas})
+    res.render('pedido', { produto : produtos})
   })
 
 });
