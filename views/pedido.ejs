@@ -8,7 +8,8 @@
   console.log(produto[0].marca)
   produto.forEach(function(val,indice) {
     if(v_marca!=produto[indice].marca){
-  %>  
+  %>
+  <div>
   <div class="accordion-item">
     <h2 class="accordion-header">
       <button class="accordion-button bg-primary text-light" type="button" data-bs-toggle="collapse" data-bs-target="#<%= produto[indice].marca.replace(' ','') %>" aria-expanded="true" aria-controls="<%= produto[indice].marca.replace(' ','') %>">
@@ -21,13 +22,61 @@
     <div id="<%= produto[indice].marca.replace(' ','') %>" class="accordion-collapse collapse" data-bs-parent="#accordion">
       <div class="accordion-body">
         <div class="row">
-          <strong><%= indice +'-'+ produto[indice].descrprod %></strong> 
+          <button type="button" key="<%=produto[indice].codprod%>,<%=produto[indice].descrprod%>,<%=produto[indice].vlrvenda%>,<%=produto[indice].codbarra%>" class="btn btn-secondary" id="addItem-<%=produto[indice].codprod%>" onclick="loadFormItem(<%=produto[indice].codprod%>)">
+            <div id="item-<%=produto[indice].codprod%>"> <%=produto[indice].codprod%> - <%=produto[indice].descrprod %></div>
+            <div id="preco-<%=produto[indice].codprod%>">$ <%=produto[indice].vlrvenda%></div>
+            <div id="estoque-<%=produto[indice].codprod%>">Est: 876</div>
+          </button> 
         </div>
       </div>
-     </div>
-  </div>
+    </div>
+    <% if(v_marca!=produto[indice].marca){  %>
+    </div>  
+      </div>
+    <% } %>
   <% })%> 
 </div>
+
+<br><br><br><br>
+
+    <span> Novos dados... </span>
+    <!-- Modal -->
+    <div class="modal fade" id="addItemModal" tabindex="-1" role="dialog" aria-labelledby="addItemModalTittle" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addItemModalTittle">Texto Aqui</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="qtdItem mb-2">
+              <div class="input-group input-group-lg mb-1">
+                <span class="input-group-text" id="inputGroup-sizing-lg">Quantidade</span>
+                <input type="number" class="form-control text-end" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+              </div>
+              <div class="input-group input-group-lg mb-3">
+                <span class="input-group-text">R$</span>
+                <input type="text" class="form-control text-end" aria-label="Amount (to the nearest dollar)">
+                <span class="input-group-text">.00</span>
+              </div>
+            </div>
+            <div class="card" style="width: 18rem;">
+              <!-- <img src="..." class="card-img-top" alt="..."> -->
+              <div class="card-body">
+                <p class="card-text text-end" id="estInfo"></p>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary">Salvar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
 
   
 </body>
