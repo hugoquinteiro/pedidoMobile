@@ -24,7 +24,7 @@
         <div class="row">
           <button type="button" key="<%=produto[indice].codprod%>,<%=produto[indice].descrprod%>,<%=produto[indice].vlrvenda%>,<%=produto[indice].codbarra%>" class="btn btn-secondary" id="addItem-<%=produto[indice].codprod%>" onclick="loadFormItem(<%=produto[indice].codprod%>)">
             <div id="item-<%=produto[indice].codprod%>"> <%=produto[indice].codprod%> - <%=produto[indice].descrprod %></div>
-            <div id="preco-<%=produto[indice].codprod%>">$ <%=produto[indice].vlrvenda%></div>
+            <div id="preco-<%=produto[indice].codprod%>"><%=produto[indice].vlrvenda%></div>
             <div id="estoque-<%=produto[indice].codprod%>">Est: 876</div>
           </button> 
         </div>
@@ -40,26 +40,25 @@
 <br><br><br><br>
 
     <span> Novos dados... </span>
+
+    <button type="button" class="btn btn-primary btn-lg btn-block" onclick="salvarPedido()">Finalizar</button>
+
     <!-- Modal -->
     <div class="modal fade" id="addItemModal" tabindex="-1" role="dialog" aria-labelledby="addItemModalTittle" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="addItemModalTittle">Texto Aqui</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
           </div>
           <div class="modal-body">
             <div class="qtdItem mb-2">
               <div class="input-group input-group-lg mb-1">
                 <span class="input-group-text" id="inputGroup-sizing-lg">Quantidade</span>
-                <input type="number" class="form-control text-end" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                <input type="number" class="form-control text-end" value=1 id="quantidade">
               </div>
               <div class="input-group input-group-lg mb-3">
                 <span class="input-group-text">R$</span>
-                <input type="text" class="form-control text-end" aria-label="Amount (to the nearest dollar)">
-                <span class="input-group-text">.00</span>
+                <input type="text" class="form-control text-end" id="precoItem">
               </div>
             </div>
             <div class="card" style="width: 18rem;">
@@ -71,7 +70,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-            <button type="button" class="btn btn-primary">Salvar</button>
+            <button type="button" class="btn btn-primary" onclick="gravarItem()">Salvar</button>
           </div>
         </div>
       </div>
