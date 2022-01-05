@@ -11,8 +11,11 @@ app.set('view engine','ejs');
 app.use(express.static('public'));
 
   //Implementação do session
-  app.use(session({secret:'abc@123'}))
-  //Carregando bodyParser
+  app.use(session({secret:'abc@123',
+                    resave: true,
+                    saveUninitialized: true}))
+
+//Carregando bodyParser
   app.use(bodyParser.urlencoded({extended:true}))
   app.use(bodyParser.json())
 
