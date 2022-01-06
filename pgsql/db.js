@@ -15,8 +15,8 @@ const client = async function connect() {
 
   const { Pool } = require('pg');
   const pool = new Pool({
-      //connectionString: 'postgres://postgres:postgres@localhost:5432/uhgo',
-      connectionString: 'postgres://postgres:postgres@localhost:5432/estudo',
+      connectionString: 'postgres://postgres:postgres@localhost:5432/uhgo',
+      //connectionString: 'postgres://postgres:postgres@localhost:5432/estudo',
       max:2, //Funcionou, após X conexões ele trava **Falta encontrar solução para fechar conexão
       //connectionTimeoutMillis: 1000
   });

@@ -33,7 +33,10 @@ function gravarItem(){
 
   axios.post('gravarItem', {dados: dadosItem})
   .then(resp => {
-    console.log('Fechar Modal')
+    console.log('Gravar Item', resp)
+  })
+  .catch( err => {
+    console.log('erro item: ', err)
   })
 }
 
@@ -41,6 +44,9 @@ function salvarPedido(){
   console.log('Salvar Pedido')
   axios.post('salvarPedido', {salvar: 'ok'})
   .then(resp => {
-    console.log('then para fechar pedido')
+    console.log('Gravar pedido', resp)
+  })
+  .catch( err => {
+    console.log('erro pedido: ', err)
   })
 }

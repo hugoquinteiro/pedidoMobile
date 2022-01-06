@@ -40,16 +40,45 @@ app.get("/pedido",(req, res) => {
 
 });
 
-session.vendas = []
+//GET para login
+app.get('/login', (req,res) => {
+  console.log('Solicitação de Login')
+  res.render('login')
+})
 
+//GET para auth
+
+app.post('/auth', (req,res) =>{
+  var login = req.body.login
+  var password = req.body.password
+  console.log(login, password)
+  select('usuario', 'login', `login='${login}' AND senha='${password}'`, '1').then(usuario => {
+    console.log(usuario.length, usuario)
+    if (usuario.length>0) {
+      res.render('index')
+    } else {
+      res.render('login')
+    }
+  })
+  
+})
+
+//Preparando Sessão
+session.vendas = []
+var i = 0
 //Gravar Item
 app.post('/gravarItem', (req, res) => {
   session.vendas.push(req.body)
+  i++
+  console.log ('gravar item', i, req.body )
+  res.send(req.body.status);
 })
 
 //Salvar Pedido
 app.post('/salvarPedido', (req, res) => {
   console.log(session.vendas)
+  session.vendas = []
+  res.send(req.body.status);
 })
 
 app.listen(port,()=>{console.log("App rodando em ", port);})
