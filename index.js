@@ -21,7 +21,12 @@ app.use(express.static('public'));
 
 // Rotas
 app.get("/",(req, res) => {
-  res.render('index')
+  if(req.session.login){
+    res.render('index')
+  } else {
+    res.render('login')
+  }
+  
 });
 
 
@@ -29,16 +34,19 @@ app.get("/",(req, res) => {
 //Pedido
 app.get("/pedido",(req, res) => {
 
-  select('produto', 'marca').then(produtos => {
-    var v_marca 
-    produtos.forEach(function (valor, indice){
-      v_marca = produtos[indice].marca
+  if(session.login){
+    select('produto', 'marca').then(produtos => {
+      var v_marca 
+      produtos.forEach(function (valor, indice){
+        v_marca = produtos[indice].marca
+      })
+      res.render('pedido', { produto : produtos})
     })
-
-    res.render('pedido', { produto : produtos})
-  })
-
+  } else {
+    res.render('login')  
+  }
 });
+
 
 //GET para login
 app.get('/login', (req,res) => {
@@ -49,12 +57,13 @@ app.get('/login', (req,res) => {
 //GET para auth
 
 app.post('/auth', (req,res) =>{
-  var login = req.body.login
+  var login = req.body.login.toUpperCase()
   var password = req.body.password
   console.log(login, password)
   select('usuario', 'login', `login='${login}' AND senha='${password}'`, '1').then(usuario => {
     console.log(usuario.length, usuario)
     if (usuario.length>0) {
+      session.login = login
       res.render('index')
     } else {
       res.render('login')
@@ -63,14 +72,20 @@ app.post('/auth', (req,res) =>{
   
 })
 
+app.get('/logout', (req, res) => {
+  //req.session.login = ''
+  console.log('LOGOUT')
+  delete req.session.login
+  res.render('login')
+})
+
 //Preparando Sessão
 session.vendas = []
-var i = 0
+
 //Gravar Item
 app.post('/gravarItem', (req, res) => {
+  console.log(session)
   session.vendas.push(req.body)
-  i++
-  console.log ('gravar item', i, req.body )
   res.send(req.body.status);
 })
 
