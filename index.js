@@ -34,7 +34,7 @@ app.get("/",(req, res) => {
 //Pedido
 app.get("/pedido",(req, res) => {
 
-  if(session.login){
+  if(req.session.login){
     select('produto', 'marca').then(produtos => {
       var v_marca 
       produtos.forEach(function (valor, indice){
@@ -59,11 +59,10 @@ app.get('/login', (req,res) => {
 app.post('/auth', (req,res) =>{
   var login = req.body.login.toUpperCase()
   var password = req.body.password
-  console.log(login, password)
   select('usuario', 'login', `login='${login}' AND senha='${password}'`, '1').then(usuario => {
-    console.log(usuario.length, usuario)
     if (usuario.length>0) {
-      session.login = login
+      req.session.login = login
+      console.log(req.session.login)
       res.render('index')
     } else {
       res.render('login')
@@ -84,15 +83,22 @@ session.vendas = []
 
 //Gravar Item
 app.post('/gravarItem', (req, res) => {
-  console.log(session)
-  session.vendas.push(req.body)
-  res.send(req.body.status);
+  if (req.session.vendas) {
+    req.session.vendas.push(req.body.dados)
+  } else {
+    req.session.vendas = []
+    req.session.vendas.push(req.body.dados)
+  }
+  console.log(req.session.vendas)
+  
+  //toda requisição precisa de uma resposta, sem isso estava travando o sistema
+  res.send(req.session.vendas);
 })
 
 //Salvar Pedido
 app.post('/salvarPedido', (req, res) => {
   console.log(session.vendas)
-  session.vendas = []
+  req.session.vendas = []
   res.send(req.body.status);
 })
 
