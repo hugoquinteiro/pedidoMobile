@@ -76,4 +76,3 @@ axios(config)
 
 })
 
-//console.log('JSID',jsId)
