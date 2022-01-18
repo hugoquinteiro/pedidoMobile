@@ -32,6 +32,41 @@ CREATE TABLE itpedido (
 );
 -- INSERT INTO itpedido VALUES (1, 147, 2, 50.5);
 
+--DROP TABLE usuario
+CREATE TABLE usuario (
+  id INTEGER,
+  login CHARACTER VARYING(20), 
+  apelido CHARACTER VARYING(20), 
+  codvend INTEGER
+);
+-- SELECT rownum as id, apelido as login,  apelido, codvend FROM tgfven WHERE AD_ENVMOBILE='S';
+
+
+CREATE TABLE cliente (
+codparc INTEGER,
+nomeparc CHARACTER VARYING(100),
+razaosocial CHARACTER VARYING(100),
+cgc_cpf CHARACTER VARYING(14),
+codvend INTEGER,
+codtab INTEGER,
+TIPNEG INTEGER
+);
+--SELECT codparc, nomeparc, razaosocial, cgc_cpf, codtab, CODVEND, (SELECT sugtipnegsaid FROM TGFCPL WHERE codparc=9999) as tipneg FROM tgfpar WHERE codvend IN (SELECT codvend FROM tgfven WHERE AD_ENVMOBILE='S')
+
+
+CREATE TABLE tabela (
+  nutab INTEGER,
+  codtab INTEGER,
+  dtvigor date,
+  codtaborig INTEGER
+)
+
+/*
+SELECT nutab, codtab, dtvigor, codtaborig FROM tgftab tab WHERE codtab IN (
+SELECT DISTINCT codtab FROM tgfpar WHERE codvend IN (SELECT codvend FROM tgfven WHERE AD_ENVMOBILE='S')
+) AND dtvigor=(SELECT MAX(dtvigor) FROM tgftab WHERE codtab=tab.codtab)
+*/
+
 
 /*  SQL de busca no Sankhya
 SELECT 
