@@ -31,23 +31,6 @@ app.get("/",(req, res) => {
 
 
 
-//Pedido
-app.get("/pedido",(req, res) => {
-
-  if(req.session.login){
-    select('produto', 'marca').then(produtos => {
-      var v_marca 
-      produtos.forEach(function (valor, indice){
-        v_marca = produtos[indice].marca
-      })
-      res.render('pedido', { produto : produtos})
-    })
-  } else {
-    res.render('login')  
-  }
-});
-
-
 //GET para login
 app.get('/login', (req,res) => {
   console.log('Solicitação de Login')
@@ -55,13 +38,12 @@ app.get('/login', (req,res) => {
 })
 
 //GET para auth
-
 app.post('/auth', (req,res) =>{
   var login = req.body.login.toUpperCase()
   var password = req.body.password
   select('usuario', 'login', `login='${login}' AND senha='${password}'`, '1').then(usuario => {
     if (usuario.length>0) {
-      req.session.login = login
+      req.session.login = usuario
       console.log(req.session.login)
       res.render('index')
     } else {
@@ -78,8 +60,35 @@ app.get('/logout', (req, res) => {
   res.render('login')
 })
 
-//Preparando Sessão
-session.vendas = []
+//Cabeçalho do Pedido
+app.get('/pedidocabecalho', (req, res) => {
+  if(req.session.login){
+    console.log('Codvend', req.session.login[0].codvend)
+    select('cliente', 'razaosocial', `codvend=${req.session.login[0].codvend}`).then(clientes => {
+      res.render('pedidoCab', {cliente: clientes} )  
+    })
+  } else {
+    res.render('login')
+    console.log('Erro no login do Cabeçalho')
+  }
+})
+
+//Pedido
+app.get("/pedido",(req, res) => {
+
+  if(req.session.login){
+    select('produto', 'marca').then(produtos => {
+      var v_marca 
+      produtos.forEach(function (valor, indice){
+        v_marca = produtos[indice].marca
+      })
+      res.render('pedido', { produto : produtos})
+    })
+  } else {
+    res.render('login')  
+  }
+});
+
 
 //Gravar Item
 app.post('/gravarItem', (req, res) => {

@@ -1,0 +1,29 @@
+<%- include ('./partials/header.ejs') %>
+<body>
+    <%- include ('./partials/navbar.ejs') %>
+    <div class="container">
+        <h1 class="mb-5">Dados do Cliente </h1>
+
+        <%cliente.forEach((valor, i) => { %>   
+    <div class="row mb-1">
+        <button class="btn btn-primary btn-lg btn-block" type="button" data-bs-toggle="offcanvas" data-bs-target="#cli<%=cliente[i].codparc%>" aria-controls="offcanvasBottom"><%=cliente[i].nomeparc %></button>
+
+        <div class="offcanvas offcanvas-bottom" tabindex="-1" id="cli<%=cliente[i].codparc%>" aria-labelledby="offcanvasBottomLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasBottomLabel"><%=cliente[i].razaosocial%></h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body small">
+                <div class="row">CNPJ: <%=cliente[i].cgc_cpf %></div>
+                <div class="row">Tipo Neg: <%=cliente[i].tipneg %></div>
+                <div class="row">Tabela: <%=cliente[i].codtab %></div>
+                <!-- <button class="btn btn-primary align-self-end" href="/pedido" type="button">Continuar -></button>                 -->
+                <a href="/pedido" class="btn btn-success">Continuar -></a>
+            </div>
+
+        </div>        
+    </div>                 
+        <% }) %>   
+    </div>    
+</body>
+<%- include ('./partials/footer.ejs') %>
