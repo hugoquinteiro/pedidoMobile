@@ -1,3 +1,11 @@
+CREATE TABLE empresa (
+  codemp INTEGER,
+  nomeemp CHARACTER VARYING (50),
+  CONSTRAINT pk_codemp PRIMARY KEY (codemp)
+);
+--SELECT codemp, razaoabrev as nomeemp FROM tsiemp WHERE codemp IN (2,12,13)
+
+
 DROP TABLE usuario;
 CREATE TABLE usuario (
   id INTEGER,
@@ -67,7 +75,33 @@ CREATE TABLE ITTABELA (
     REFERENCES produto (codprod) MATCH SIMPLE ON UPDATE CASCADE ON DELETE NO ACTION
 );
 
+/*
+SELECT nutab, codprod, replace(vlrvenda,',','.') as vlrvenda FROM tgfexc
+WHERE nutab IN (
+    SELECT nutab  FROM tgftab tab WHERE codtab IN (
+    SELECT DISTINCT codtab FROM tgfpar WHERE codvend IN (SELECT codvend FROM tgfven WHERE AD_ENVMOBILE='S')
+    ) AND dtvigor=(SELECT MAX(dtvigor) FROM tgftab WHERE codtab=tab.codtab)
+) 
+AND codprod IN ( SELECT codprod FROM tgfpro WHERE  ATIVO='S' AND AD_ION_ENVIA='S')
+*/
 
+DROP TABLE ESTOQUE;
+CREATE TABLE ESTOQUE (
+  CODEMP INTEGER,
+  CODPROD INTEGER,
+  RESERVADO DECIMAL(12,2),
+  ESTOQUE DECIMAL(12,2),
+  CONSTRAINT fk_empresa_estoque FOREIGN KEY (codemp)
+    REFERENCES empresa (codemp) MATCH SIMPLE ON UPDATE CASCADE ON DELETE NO ACTION,
+  CONSTRAINT fk_produto_estoque FOREIGN KEY (codprod)
+    REFERENCES produto (codprod) MATCH SIMPLE ON UPDATE CASCADE ON DELETE NO ACTION
+);
+
+/*
+SELECT CODEMP, CODPROD, RESERVADO, ESTOQUE FROM TGFEST 
+WHERE TIPO='P' AND CODLOCAL=2 AND CODEMP IN (2,12,13)
+AND codprod IN ( SELECT codprod FROM tgfpro WHERE  ATIVO='S' AND AD_ION_ENVIA='S')
+*/
 
 
 /*

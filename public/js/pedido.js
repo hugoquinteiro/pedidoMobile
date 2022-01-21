@@ -2,17 +2,40 @@ console.log('Pedido Carregou')
 var myModal = new bootstrap.Modal(document.getElementById('addItemModal'), {})
 
 function loadFormItem(codprod){
-  
+  let tbody = document.getElementById('tbodyItens')
+
   var item = document.getElementById('item-'+codprod).innerHTML
   var preco = document.getElementById('preco-'+codprod).innerHTML
   var estoque = document.getElementById('estoque-'+codprod).innerHTML
   var estInfo = document.getElementById('estInfo')
   var precoItem = document.getElementById('precoItem')
-  
-  var tittle = document.getElementById('addItemModalTittle')
+  var quantidade = document.getElementById('quantidade')
+  var tittle = document.getElementById('addItemModalTittle')  
+
+  //Verifica se o item já existe no pedido
+  var codprod = item.substring(0, item.indexOf(' -')).trim()
   tittle.innerText = item
   estInfo.innerHTML = estoque
+  quantidade.value = 1
   precoItem.value = preco
+  for (let i =0; i < tbodyItens.rows.length; i++){
+    console.log(tbodyItens.rows[i].cells[0].innerHTML, '->',codprod)
+    if ((tbodyItens.rows[i].cells[0].innerHTML) === codprod) {
+      //console.log(tbodyItens.rows[i].cells[0].innerHTML, codprod)
+      precoItem.value = tbodyItens.rows[i].cells[2].innerHTML
+      quantidade.value = tbodyItens.rows[i].cells[3].innerHTML
+      i=999
+    } else {
+      quantidade.value = 1
+      precoItem.value = preco
+    }
+  }
+
+
+  
+
+
+  //precoItem.value = preco
   myModal.toggle()
 }
 
@@ -39,7 +62,7 @@ function gravarItem(){
 //  atualizaTableItens(dadosItem)
   myModal.hide()
 
-  axios.post('gravarItem', {dados: dadosItem})
+  axios.post('/gravarItem', {dados: dadosItem})
   .then(resp => {
     //console.log('Gravar Item', resp.data)
     atualizaTableItens(resp.data)
@@ -51,7 +74,7 @@ function gravarItem(){
 
 function salvarPedido(){
   console.log('Salvar Pedido')
-  axios.post('salvarPedido', {salvar: 'ok'})
+  axios.post('/salvarPedido', {salvar: 'ok'})
   .then(resp => {
     //console.log('Gravar pedido', resp)
   })
@@ -87,3 +110,4 @@ function atualizaTableItens (arrItens) {
 
 
 }
+

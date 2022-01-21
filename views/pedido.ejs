@@ -23,7 +23,7 @@
           <button type="button" key="<%=produto[indice].codprod%>,<%=produto[indice].descrprod%>,<%=produto[indice].vlrvenda%>,<%=produto[indice].codbarra%>" class="btn btn-secondary" id="addItem-<%=produto[indice].codprod%>" onclick="loadFormItem(<%=produto[indice].codprod%>)">
             <div id="item-<%=produto[indice].codprod%>"> <%=produto[indice].codprod%> - <%=produto[indice].descrprod %></div>
             <div id="preco-<%=produto[indice].codprod%>"><%=produto[indice].vlrvenda%></div>
-            <div id="estoque-<%=produto[indice].codprod%>">Est: 876</div>
+            <div id="estoque-<%=produto[indice].codprod%>">Est: <%=produto[indice].estoque%></div>
           </button> 
         </div>
       </div>
@@ -95,7 +95,6 @@
         </div>
       </div>
     </div>
-    
 
   
 </body>

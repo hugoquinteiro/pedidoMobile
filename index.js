@@ -3,6 +3,7 @@ const session = require('express-session')
 const bodyParser = require('body-parser')
 const app = express();
 const select = require('./pgsql/select')
+const selectFull = require('./pgsql/selectFull')
 const port = 8001
 
 
@@ -74,25 +75,41 @@ app.get('/pedidocabecalho', (req, res) => {
 })
 
 //Pedido
-app.get("/pedido",(req, res) => {
-
+app.get(`/pedido/:id`,(req, res) => {
+  console.log('codparc esta aqui',req.params.id)
   if(req.session.login){
-    select('produto', 'marca').then(produtos => {
-      var v_marca 
-      produtos.forEach(function (valor, indice){
-        v_marca = produtos[indice].marca
+      req.session.cliente = req.params.id
+      var query = 
+          `SELECT tab.codprod, pro.descrprod, tab.vlrvenda, pro.marca, (est.estoque-est.reservado) as estoque
+           FROM ittabela as tab 
+           INNER JOIN produto as pro ON (tab.codprod=pro.codprod) 
+           LEFT JOIN ESTOQUE AS est ON (tab.codprod=est.codprod) 
+           WHERE tab.nutab=(SELECT nutab FROM TABELA WHERE codtab=(SELECT codtab FROM cliente WHERE codparc=${req.params.id}))
+           ORDER BY pro.marca;`
+      selectFull(query).then(produtos => {
+        console.log(produtos[0])
+        res.render('pedido', { produto : produtos})
       })
-      res.render('pedido', { produto : produtos})
-    })
   } else {
     res.render('login')  
   }
 });
 
+app.get('/teste', (req, res) => {
+  console.log('chegou no Get', req.body)
+  res.send('Chegou aqui')
+})
 
 //Gravar Item
 app.post('/gravarItem', (req, res) => {
+  console.log('chegou gravar Item')
   if (req.session.vendas) {
+    req.session.vendas.forEach((el,i) => {
+      console.log(el.codprod , req.body.dados.codprod)
+      if (el.codprod == req.body.dados.codprod) {
+        req.session.vendas.splice(i,1);
+      }
+    })
     req.session.vendas.push(req.body.dados)
   } else {
     req.session.vendas = []
@@ -106,9 +123,9 @@ app.post('/gravarItem', (req, res) => {
 
 //Salvar Pedido
 app.post('/salvarPedido', (req, res) => {
-  console.log(session.vendas)
+  console.log(req.session.cliente, req.session.vendas)
   req.session.vendas = []
-  res.send(req.body.status);
+  res.render('index');
 })
 
 app.listen(port,()=>{console.log("App rodando em ", port);})
