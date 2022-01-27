@@ -1,5 +1,5 @@
 <%- include ('./partials/header.ejs') %>
-<body>
+<body onload=loadIndex()>
     <%- include ('./partials/navbar.ejs') %>
     <div class="container">
         <!-- Novo Pedido -->
@@ -10,6 +10,26 @@
               <a href="/pedidocabecalho" class="btn btn-primary">Iniciar um Novo Pedido</a>
             </div>
           </div>
+
+        <!-- Lista de Pedidos  -->
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Data</th>
+              <th scope="col">Cliente</th>
+              <th scope="col">Valor</th>
+              <th scope="col">*</th>
+            </tr>
+          </thead>
+          <tbody id='tablePedidos'>
+          </tbody>
+        </table>
+
+        <div><i class="fas fa-share-square"></i> Pendente</div>
+        <div><i class="fas fa-check"></i> Enviado</div>
+        <div><i class="fas fa-check-double"></i> Faturada</div>
+        
     </div>
 
 </body>

@@ -4,7 +4,10 @@ const bodyParser = require('body-parser')
 const app = express();
 const select = require('./pgsql/select')
 const selectFull = require('./pgsql/selectFull')
+const insertPedido = require('./pgsql/insertPedido')
+const update = require('./pgsql/update')
 const port = 8001
+const sincPedido = require('./api/sincPedido')
 
 
 // Estou dizendo para o Express usar o EJS como View engine
@@ -44,6 +47,8 @@ app.post('/auth', (req,res) =>{
   var password = req.body.password
   select('usuario', 'login', `login='${login}' AND senha='${password}'`, '1').then(usuario => {
     if (usuario.length>0) {
+      //req.session.login = {usuario: usuario, codvend: codvend}
+      //console.log(usuario)
       req.session.login = usuario
       console.log(req.session.login)
       res.render('index')
@@ -95,7 +100,7 @@ app.get(`/pedido/:id`,(req, res) => {
   }
 });
 
-app.get('/teste', (req, res) => {
+app.get('teste', (req, res) => {
   console.log('chegou no Get', req.body)
   res.send('Chegou aqui')
 })
@@ -115,7 +120,7 @@ app.post('/gravarItem', (req, res) => {
     req.session.vendas = []
     req.session.vendas.push(req.body.dados)
   }
-  console.log(req.session.vendas)
+  //console.log(req.session.vendas)
   
   //toda requisição precisa de uma resposta, sem isso estava travando o sistema
   res.send(req.session.vendas);
@@ -123,9 +128,55 @@ app.post('/gravarItem', (req, res) => {
 
 //Salvar Pedido
 app.post('/salvarPedido', (req, res) => {
-  console.log(req.session.cliente, req.session.vendas)
-  req.session.vendas = []
-  res.render('index');
+  let dtcria = new Date()
+  //console.log(req.session.cliente, req.session.vendas)
+  var query = `SELECT codemp FROM cliente WHERE codparc=${req.session.cliente};`
+  //console.log(req.session.login[0].codvend, req.session.login[0].id)
+  selectFull(query).then(codemp =>{
+    let cab = {idlogin:req.session.login[0].id,
+               dtcria: dtcria,
+               codvend: req.session.login[0].codvend,
+               codparc: req.session.cliente,
+               codemp: codemp[0].codemp  
+              }
+    //console.log(cab, req.session.vendas)
+    let itensVenda = []
+
+    req.session.vendas.forEach(valor =>{
+      itensVenda.push(Object.values(valor))
+    })
+
+    console.log(itensVenda)
+    insertPedido(cab, itensVenda).then(retorno =>{
+      console.log('retorno',retorno)
+      res.send({status:'200'})
+    })
+    //Zera seção após gravação
+    req.session.vendas = []  
+  })
+  .catch(err =>{console.log(err)})
+})
+
+app.get('/listaPedidos',(req,res) =>{
+  //console.log('lista pedidos...')
+  let query = `SELECT COALESCE(nunota, id) as id, dtcria, (SELECT nomeparc FROM cliente WHERE codparc=pedido.codparc) as cliente, total
+              FROM pedido WHERE codvend= ${req.session.login[0].codvend};`
+  selectFull(query).then(result =>{
+    let listaPedidos = result
+    res.send({pedidos: listaPedidos})
+  })
+  .catch(err => {console.log(err)})
+})
+
+app.post('/sincPedido', (req, res) => {
+  sincPedido(req.body.pedido)
+  .then(resapi => {
+    console.log(resapi.nunota.$)
+    let query = `UPDATE pedido SET nunota=${resapi.nunota.$} WHERE id=${req.body.pedido}`
+    update(query).then(resquery => {res.send('ok')}).catch(err => console.log(err))
+  })
+  .catch(err=>{console.log('ERRO sincPedido:', err)})
+  
 })
 
 app.listen(port,()=>{console.log("App rodando em ", port);})

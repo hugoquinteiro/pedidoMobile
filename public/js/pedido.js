@@ -76,7 +76,8 @@ function salvarPedido(){
   console.log('Salvar Pedido')
   axios.post('/salvarPedido', {salvar: 'ok'})
   .then(resp => {
-    //console.log('Gravar pedido', resp)
+    console.log('Gravar pedido', resp.data)
+    window.location.href = '/';
   })
   .catch( err => {
     console.log('erro pedido: ', err)
@@ -88,7 +89,7 @@ function atualizaTableItens (arrItens) {
   tbodyItens.innerHTML=''
   //Carregando linha de item na tabela
   arrItens.forEach(el => {
-    console.log(el)
+    //console.log(el)
     let tbody = document.getElementById('tbodyItens')
     let tr = tbody.insertRow()
   
@@ -107,7 +108,40 @@ function atualizaTableItens (arrItens) {
     td_vlrTotal.innerText = (item[3] * item[2]).toLocaleString('pt-br', {minimumFractionDigits: 2, maximumFractionDigits:2})
   
   });
-
-
 }
 
+function loadIndex(){
+  console.log('Carregando pedidos')
+  let table = document.getElementById('tablePedidos')
+  axios.get('/listaPedidos')
+  .then(resp => {
+    console.log(resp.data.pedidos)
+    resp.data.pedidos.forEach(el => {
+      let tr = table.insertRow()
+
+      let td_id = tr.insertCell()
+      let td_data = tr.insertCell()
+      let td_cliente = tr.insertCell()
+      let td_total = tr.insertCell()
+      let td_icone = tr.insertCell()
+
+      td_id.innerText = el.id
+      td_data.innerText = el.dtcria.substring(0,10)
+      td_cliente.innerText = el.cliente
+      td_total.innerText = el.total
+      td_icone.innerHTML = `<i class="fas fa-share-square" id="status" key="${el.id}" onclick="atualizaPedido(${el.id})"></i>`
+    })
+ 
+  })
+  .catch(err => console.log('Erro:',err))  
+}
+
+
+function atualizaPedido(idPedido) {
+  console.log('Status Pedido', idPedido)
+  axios.post('/sincPedido', {pedido: idPedido})
+  .then (res =>{
+    console.log(res)
+  })
+  .catch(err =>{alert('Erro no Status do Pedido',err)})
+}
