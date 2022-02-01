@@ -3,18 +3,24 @@ var myModal = new bootstrap.Modal(document.getElementById('addItemModal'), {})
 
 function loadFormItem(codprod){
   let tbody = document.getElementById('tbodyItens')
-
-  var item = document.getElementById('item-'+codprod).innerHTML
-  var preco = document.getElementById('preco-'+codprod).innerHTML
-  var estoque = document.getElementById('estoque-'+codprod).innerHTML
+  let itens = document.getElementById('btnAdd-'+codprod)
+  //console.log('itens', itens.getAttribute('key'))
+  let key = itens.getAttribute('key')
+  var arritens = []
+  arritens =  key.split('|;')  //JSON.parse
+  console.log('itens', arritens)
+  var codprod = arritens[0]
+  var descrprod = arritens[1]
+  var preco = arritens[2]
+  var estoque = arritens[3]
   var estInfo = document.getElementById('estInfo')
   var precoItem = document.getElementById('precoItem')
   var quantidade = document.getElementById('quantidade')
   var tittle = document.getElementById('addItemModalTittle')  
 
   //Verifica se o item já existe no pedido
-  var codprod = item.substring(0, item.indexOf(' -')).trim()
-  tittle.innerText = item
+  //var codprod = item.substring(0, item.indexOf(' -')).trim()
+  tittle.innerText = `${codprod} - ${descrprod}`
   estInfo.innerHTML = estoque
   quantidade.value = 1
   precoItem.value = preco
@@ -31,10 +37,6 @@ function loadFormItem(codprod){
     }
   }
 
-
-  
-
-
   //precoItem.value = preco
   myModal.toggle()
 }
@@ -46,6 +48,9 @@ function gravarItem(){
   var quantidade = document.getElementById('quantidade').value;
   var precoItem = document.getElementById('precoItem').value;
 
+  if(isNaN(precoItem)){
+    alert('não é valor')
+  }
   
   //console.log(item.substring(0, item.indexOf(' -')).trim(), item.substring(item.indexOf('- ')+2))
   //Separando codigo da descrição
@@ -129,7 +134,22 @@ function loadIndex(){
       td_data.innerText = el.dtcria.substring(0,10)
       td_cliente.innerText = el.cliente
       td_total.innerText = el.total
-      td_icone.innerHTML = `<i class="fas fa-share-square" id="status" key="${el.id}" onclick="atualizaPedido(${el.id})"></i>`
+
+      let tipoIcone
+      switch(el.statusped) {
+        case 'PED':
+          tipoIcone = 'share-square'
+          break;
+        case 'INT':
+          tipoIcone = 'check'
+          break;
+        case 'FAT':
+            tipoIcone = 'check-double'
+          break;
+          default:
+            tipoIcone = 'bug'
+      }
+      td_icone.innerHTML = `<i class="fas fa-${tipoIcone}" id="status" key="${el.id}" color="blue" onclick="atualizaPedido(${el.id})"></i>`
     })
  
   })

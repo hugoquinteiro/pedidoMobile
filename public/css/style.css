@@ -1,0 +1,35 @@
+body{
+  background-color: rgb(238, 234, 241);
+}
+
+#itens {
+  position: relative;
+  border: solid 1px rgb(230, 224, 224);
+  /*font-size: 1rem;*/
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  padding: 5px 5px;
+  height: 90px;
+}
+
+#span{
+  position: absolute;
+  font-size: 15px;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  bottom: 3px;
+  left: 5px;
+}
+
+[id^="btnAdd"] {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  width: 10%;
+  font-size: 25px;
+  padding: 0px 0px;
+}
+
+#confirmaCliente {
+  position: absolute;
+  right: 5px;
+  top: 10px;
+}

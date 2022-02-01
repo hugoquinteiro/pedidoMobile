@@ -2,38 +2,56 @@
 <body>
     <%- include ('./partials/navbar.ejs') %>
 
-<div class="accordion" id="accordion">
-  <%  var v_marca 
-  produto.forEach(function(val,indice) {
-    if(v_marca!=produto[indice].marca){
-  %>
-  <div>
-  <div class="accordion-item">
-    <h2 class="accordion-header">
-      <button class="accordion-button bg-primary text-light" type="button" data-bs-toggle="collapse" data-bs-target="#<%= produto[indice].marca.replace(' ','') %>" aria-expanded="true" aria-controls="<%= produto[indice].marca.replace(' ','') %>">
-        <%= produto[indice].marca %>
-      </button>
-    </h2>
-      <% }
-        v_marca = produto[indice].marca
-      %>      
-    <div id="<%= produto[indice].marca.replace(' ','') %>" class="accordion-collapse collapse" data-bs-parent="#accordion">
-      <div class="accordion-body">
-        <div class="row">
-          <button type="button" key="<%=produto[indice].codprod%>,<%=produto[indice].descrprod%>,<%=produto[indice].vlrvenda%>,<%=produto[indice].codbarra%>" class="btn btn-secondary" id="addItem-<%=produto[indice].codprod%>" onclick="loadFormItem(<%=produto[indice].codprod%>)">
-            <div id="item-<%=produto[indice].codprod%>"> <%=produto[indice].codprod%> - <%=produto[indice].descrprod %></div>
-            <div id="preco-<%=produto[indice].codprod%>"><%=produto[indice].vlrvenda%></div>
-            <div id="estoque-<%=produto[indice].codprod%>">Est: <%=produto[indice].estoque%></div>
-          </button> 
+  <div class="container">
+    <div class="accordion mt-3" id="accordion">
+      <%  var v_marca ='xx'
+      produto.forEach(function(val,indice) {
+        if(v_marca!=produto[indice].marca){
+      %>
+      <div>
+      <div class="accordion-item">
+        <h2 class="accordion-header mb-2">
+          <button class="accordion-button bg-secondary text-light" type="button" data-bs-toggle="collapse" data-bs-target="#<%= produto[indice].marca.replace(' ','') %>" aria-expanded="true" aria-controls="<%= produto[indice].marca.replace(' ','') %>">
+            <%= produto[indice].marca %>
+          </button>
+        </h2>
+          <% }
+            v_marca = produto[indice].marca
+          %>      
+        <!-- <div id="<%= produto[indice].marca.replace(' ','') %>" class="accordion-collapse collapse" data-bs-parent="#accordion">
+          <div class="accordion-body">
+            <div class="row">
+              <button type="button" key="<%=produto[indice].codprod%>,<%=produto[indice].descrprod%>,<%=produto[indice].vlrvenda%>,<%=produto[indice].codbarra%>" class="btn btn-secondary" id="addItem-<%=produto[indice].codprod%>" onclick="loadFormItem(<%=produto[indice].codprod%>)">
+                <div id="item-<%=produto[indice].codprod%>"> <%=produto[indice].codprod%> - <%=produto[indice].descrprod %></div>
+                <div id="preco-<%=produto[indice].codprod%>"><%=produto[indice].vlrvenda%></div>
+                <div id="estoque-<%=produto[indice].codprod%>">Est: <%=produto[indice].estoque%></div>
+              </button> 
+            </div>
+          </div>
+        </div> -->
+    
+        <div class="collapse" id="<%= produto[indice].marca.replace(' ','') %>" data-parent="#accordion">
+          <div class="container-fluid">
+              <div class="row">
+                    <div class="card-body col-12 col-lg-6 bg-ligth" id="itens">
+                      <%=produto[indice].descrprod%>
+                      <span id="span"><strong>R$ <%=produto[indice].vlrvenda%></strong></span>
+                      <button class="btn btn-success" id="btnAdd-<%=produto[indice].codprod%>" onclick="loadFormItem(<%=produto[indice].codprod%>)" key="<%=produto[indice].codprod%>|;<%=produto[indice].descrprod%>|;<%=produto[indice].vlrvenda%>|;<%=produto[indice].estoque%>">+</button>
+                    </div>
+              </div>
+          </div> 
         </div>
-      </div>
+    
+    
+        <% if(v_marca!=produto[indice].marca){  %>
+        </div>  
+          </div>
+        <% } %>
+      <% })%> 
     </div>
-    <% if(v_marca!=produto[indice].marca){  %>
-    </div>  
-      </div>
-    <% } %>
-  <% })%> 
-</div>
+        
+  </div><!--  fim do container -->
+
 
 <br><br><br><br>
 

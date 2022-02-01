@@ -15,7 +15,7 @@
  });
  
  pool.on('connect', () => {
-   console.log('Base de Dados conectado com sucesso!');
+   //console.log('Base de Dados conectado com sucesso!');
  });
  
  module.exports = {

@@ -4,8 +4,9 @@ const db = require('./db2')
 //INSERT
 
 var insere = async function insertCustomer(cab, itens){
-  let sql = 'INSERT INTO pedido (idlogin, dtcria, codvend, codparc, codemp) VALUES ($1, $2, $3, $4, $5);';
+  let sql = 'INSERT INTO pedido (idlogin, dtcria, codvend, codparc, codemp, statusped) VALUES ($1, $2, $3, $4, $5, $6);';
   let values = [cab.idlogin,cab.dtcria, cab.codvend, cab.codparc, cab.codemp];
+  values.push("PED")
   let ins = await db.query(sql, values);
 
   //console.log(ins.rowCount)

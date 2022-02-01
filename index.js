@@ -90,9 +90,10 @@ app.get(`/pedido/:id`,(req, res) => {
            INNER JOIN produto as pro ON (tab.codprod=pro.codprod) 
            LEFT JOIN ESTOQUE AS est ON (tab.codprod=est.codprod) 
            WHERE tab.nutab=(SELECT nutab FROM TABELA WHERE codtab=(SELECT codtab FROM cliente WHERE codparc=${req.params.id}))
-           ORDER BY pro.marca;`
+           AND est.codemp = (SELECT codemp FROM cliente WHERE codparc=${req.params.id})
+           ORDER BY pro.marca, pro.descrprod;`
       selectFull(query).then(produtos => {
-        console.log(produtos[0])
+        //console.log(produtos)
         res.render('pedido', { produto : produtos})
       })
   } else {
@@ -100,10 +101,6 @@ app.get(`/pedido/:id`,(req, res) => {
   }
 });
 
-app.get('teste', (req, res) => {
-  console.log('chegou no Get', req.body)
-  res.send('Chegou aqui')
-})
 
 //Gravar Item
 app.post('/gravarItem', (req, res) => {
@@ -159,7 +156,7 @@ app.post('/salvarPedido', (req, res) => {
 
 app.get('/listaPedidos',(req,res) =>{
   //console.log('lista pedidos...')
-  let query = `SELECT COALESCE(nunota, id) as id, dtcria, (SELECT nomeparc FROM cliente WHERE codparc=pedido.codparc) as cliente, total
+  let query = `SELECT COALESCE(nunota, id) as id, to_char(dtcria, 'DD/MM/YYYY') as dtcria, (SELECT nomeparc FROM cliente WHERE codparc=pedido.codparc) as cliente, total, statusped
               FROM pedido WHERE codvend= ${req.session.login[0].codvend};`
   selectFull(query).then(result =>{
     let listaPedidos = result
@@ -172,7 +169,7 @@ app.post('/sincPedido', (req, res) => {
   sincPedido(req.body.pedido)
   .then(resapi => {
     console.log(resapi.nunota.$)
-    let query = `UPDATE pedido SET nunota=${resapi.nunota.$} WHERE id=${req.body.pedido}`
+    let query = `UPDATE pedido SET nunota=${resapi.nunota.$}, statusped='INT' WHERE id=${req.body.pedido}`
     update(query).then(resquery => {res.send('ok')}).catch(err => console.log(err))
   })
   .catch(err=>{console.log('ERRO sincPedido:', err)})
