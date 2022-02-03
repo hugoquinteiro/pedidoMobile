@@ -176,4 +176,4 @@ app.post('/sincPedido', (req, res) => {
   
 })
 
-app.listen(port,()=>{console.log("App rodando em ", port);})
+app.listen(port,()=>{console.log("App rodando em ", process.env.PORT || port);})
