@@ -93,7 +93,7 @@ app.get(`/pedido/:id`,(req, res) => {
            AND est.codemp = (SELECT codemp FROM cliente WHERE codparc=${req.params.id})
            ORDER BY pro.marca, pro.descrprod;`
       selectFull(query).then(produtos => {
-        //console.log(produtos)
+        console.log(produtos)
         res.render('pedido', { produto : produtos})
       })
   } else {
