@@ -6,7 +6,7 @@ const select = require('./pgsql/select')
 const selectFull = require('./pgsql/selectFull')
 const insertPedido = require('./pgsql/insertPedido')
 const update = require('./pgsql/update')
-const port = 8001
+const portalocal = 8001
 const sincPedido = require('./api/sincPedido')
 
 
@@ -176,4 +176,6 @@ app.post('/sincPedido', (req, res) => {
   
 })
 
-app.listen(port,()=>{console.log("App rodando em ", process.env.PORT || port);})
+app.listen(process.env.PORT || portalocal,
+          ()=>{console.log("App rodando em ", process.env.PORT || portalocal);
+              })
