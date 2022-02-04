@@ -9,7 +9,8 @@
 
  // ==> Conexão com a Base de Dados:
  const pool = new Pool({
-   connectionString: process.env.DATABASE_URL ||  'postgres://postgres:postgres@localhost:5432/uhgo'
+   connectionString: process.env.DATABASE_URL 
+   //||  'postgres://postgres:postgres@localhost:5432/uhgo'
    //connectionString: 'postgres://postgres:postgres@localhost:5432/estudo'
    ,max:1
  });
