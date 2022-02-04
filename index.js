@@ -176,6 +176,17 @@ app.post('/sincPedido', (req, res) => {
   
 })
 
-app.listen(process.env.PORT || portalocal,
-          ()=>{console.log("App rodando em ", process.env.PORT || portalocal);
-              })
+// app.listen(process.env.PORT || portalocal,
+//           ()=>{console.log("App rodando em ", process.env.PORT || portalocal);
+//               })
+
+// for an express app, the server is returned from the `.listen()` method
+let server = app.listen(process.env.PORT || portalocal,
+            ()=>{console.log("App rodando em ", process.env.PORT || portalocal);
+                })
+
+
+server.on('clientError', (err, socket) => {
+  console.error(err);
+  socket.end('HTTP/1.1 400 Bad Request\r\n\r\n');
+});
