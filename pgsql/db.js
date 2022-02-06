@@ -17,7 +17,8 @@ const client = async function connect() {
   const pool = new Pool({
       connectionString: process.env.DATABASE_URL || 'postgres://postgres:postgres@localhost:5432/uhgo'
       //connectionString: 'postgres://postgres:postgres@localhost:5432/estudo',
-      ,max:2 //Funcionou, após X conexões ele trava **Falta encontrar solução para fechar conexão
+      ,min:2
+      ,max:10 //Funcionou, após X conexões ele trava **Falta encontrar solução para fechar conexão
       //connectionTimeoutMillis: 1000
       ,ssl:true
   });
