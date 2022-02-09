@@ -13,7 +13,7 @@
    //connectionString: 'postgres://postgres:postgres@localhost:5432/estudo'
    ,min:2
    ,max:10
-   ,ssl:true
+   //,ssl:true
  });
  
  pool.on('connect', () => {

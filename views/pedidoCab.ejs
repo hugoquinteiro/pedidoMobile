@@ -1,12 +1,12 @@
 <%- include ('./partials/header.ejs') %>
 <body>
     <%- include ('./partials/navbar.ejs') %>
-    <div class="container">
+<div class="container">
         <h1 class="mb-5">Dados do Cliente </h1>
 
         <%cliente.forEach((valor, i) => { %>   
     <div class="row mb-1">
-        <button class="btn btn-primary btn-lg btn-block" type="button" data-bs-toggle="offcanvas" data-bs-target="#cli<%=cliente[i].codparc%>" aria-controls="offcanvasBottom"><%=cliente[i].nomeparc %></button>
+        <div class="btn btn-primary btn-lg btn-block" type="button" data-bs-toggle="offcanvas" data-bs-target="#cli<%=cliente[i].codparc%>" aria-controls="offcanvasBottom"><%=cliente[i].nomeparc %></div>
 
         <div class="offcanvas offcanvas-bottom" tabindex="-1" id="cli<%=cliente[i].codparc%>" aria-labelledby="offcanvasBottomLabel">
             <div class="offcanvas-header">
@@ -26,6 +26,6 @@
         </div>        
     </div>                 
         <% }) %>   
-    </div>    
+</div>    
 </body>
 <%- include ('./partials/footer.ejs') %>

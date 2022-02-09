@@ -20,7 +20,7 @@ const client = async function connect() {
       ,min:2
       ,max:10 //Funcionou, após X conexões ele trava **Falta encontrar solução para fechar conexão
       //connectionTimeoutMillis: 1000
-      ,ssl:true
+      //,ssl:true
   });
   
   //apenas testando a conexão

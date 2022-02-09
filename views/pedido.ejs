@@ -11,25 +11,14 @@
       <div>
       <div class="accordion-item">
         <h2 class="accordion-header mb-2">
-          <button class="accordion-button bg-secondary text-light" type="button" data-bs-toggle="collapse" data-bs-target="#<%= produto[indice].marca.replace(' ','') %>" aria-expanded="true" aria-controls="<%= produto[indice].marca.replace(' ','') %>">
+          <div class="accordion-button bg-secondary text-light" type="button" data-bs-toggle="collapse" data-bs-target="#<%= produto[indice].marca.replace(' ','') %>" aria-expanded="true" aria-controls="<%= produto[indice].marca.replace(' ','') %>">
             <%= produto[indice].marca %>
-          </button>
+          </div>
         </h2>
           <% }
             v_marca = produto[indice].marca
           %>      
-        <!-- <div id="<%= produto[indice].marca.replace(' ','') %>" class="accordion-collapse collapse" data-bs-parent="#accordion">
-          <div class="accordion-body">
-            <div class="row">
-              <button type="button" key="<%=produto[indice].codprod%>,<%=produto[indice].descrprod%>,<%=produto[indice].vlrvenda%>,<%=produto[indice].codbarra%>" class="btn btn-secondary" id="addItem-<%=produto[indice].codprod%>" onclick="loadFormItem(<%=produto[indice].codprod%>)">
-                <div id="item-<%=produto[indice].codprod%>"> <%=produto[indice].codprod%> - <%=produto[indice].descrprod %></div>
-                <div id="preco-<%=produto[indice].codprod%>"><%=produto[indice].vlrvenda%></div>
-                <div id="estoque-<%=produto[indice].codprod%>">Est: <%=produto[indice].estoque%></div>
-              </button> 
-            </div>
-          </div>
-        </div> -->
-    
+      
         <div class="collapse" id="<%= produto[indice].marca.replace(' ','') %>" data-parent="#accordion">
           <div class="container-fluid">
               <div class="row">
@@ -96,7 +85,7 @@
               </div>
               <div class="input-group input-group-lg mb-3">
                 <span class="input-group-text">R$</span>
-                <input type="text" class="form-control text-end" id="precoItem">
+                <input type="number" class="form-control text-end" id="precoItem" pattern="^\d+(?:\.\d{1,2})?$" step="0.01">
               </div>
             </div>
             <div class="card" style="width: 18rem;">

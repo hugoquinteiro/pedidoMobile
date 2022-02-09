@@ -165,3 +165,17 @@ function atualizaPedido(idPedido) {
   })
   .catch(err =>{alert('Erro no Status do Pedido',err)})
 }
+
+//JQuery para tratar campo de valor com tag pattern
+$(document).on('keydown', 'input[pattern]', function(e){
+  var input = $(this);
+  var oldVal = input.val();
+  var regex = new RegExp(input.attr('pattern'), 'g');
+
+  setTimeout(function(){
+    var newVal = input.val();
+    if(!regex.test(newVal)){
+      input.val(oldVal); 
+    }
+  }, 0);
+});

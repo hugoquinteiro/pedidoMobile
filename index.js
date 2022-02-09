@@ -93,7 +93,7 @@ app.get(`/pedido/:id`,(req, res) => {
            AND est.codemp = (SELECT codemp FROM cliente WHERE codparc=${req.params.id})
            ORDER BY pro.marca, pro.descrprod;`
       selectFull(query).then(produtos => {
-        console.log(produtos)
+        //console.log(produtos)
         res.render('pedido', { produto : produtos})
       })
   } else {
@@ -104,10 +104,10 @@ app.get(`/pedido/:id`,(req, res) => {
 
 //Gravar Item
 app.post('/gravarItem', (req, res) => {
-  console.log('chegou gravar Item')
+  //console.log('chegou gravar Item')
   if (req.session.vendas) {
     req.session.vendas.forEach((el,i) => {
-      console.log(el.codprod , req.body.dados.codprod)
+      //console.log(el.codprod , req.body.dados.codprod)
       if (el.codprod == req.body.dados.codprod) {
         req.session.vendas.splice(i,1);
       }
@@ -143,9 +143,9 @@ app.post('/salvarPedido', (req, res) => {
       itensVenda.push(Object.values(valor))
     })
 
-    console.log(itensVenda)
+    //console.log(itensVenda)
     insertPedido(cab, itensVenda).then(retorno =>{
-      console.log('retorno',retorno)
+      //console.log('retorno',retorno)
       res.send({status:'200'})
     })
     //Zera seção após gravação
@@ -186,6 +186,7 @@ let server = app.listen(process.env.PORT || portalocal,
                 })
 
 
+//implementei essa parte para tentar subir o App no HEROKU                
 server.on('clientError', (err, socket) => {
   console.error(err);
   socket.end('HTTP/1.1 400 Bad Request\r\n\r\n');
