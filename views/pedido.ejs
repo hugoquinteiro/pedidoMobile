@@ -44,7 +44,8 @@
 
 <br><br><br><br>
 
-    <span> Novos dados... </span>
+    <span> Novos dados... </span><br>
+    <i class="fa-solid fa-delete-left">XXXX</i>
     <div class="container">
       <div class="row">
         <button type="button" class="btn btn-primary btn-lg btn-block" onclick="salvarPedido()">Finalizar</button>  
@@ -61,10 +62,17 @@
               <th scope="col">Unit</th>
               <th scope="col">Qtd</th>
               <th scope="col">Total</th>
+              <th scope="col">X</th>
             </tr>
           </thead>
           <tbody id="tbodyItens">
           </tbody>
+          <tfoot>
+            <tr class="bg-secondary text-white">
+              <td colspan="4">Total:</td>
+              <td id="totalped" class="formartNumber">0.00</td>
+            </tr>
+          </tfoot>
         </table>
       </div>
     </div>

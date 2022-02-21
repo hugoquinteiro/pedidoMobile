@@ -1,0 +1,8 @@
+- Criar apenas um arquivo de DB
+
+- Subtotal dos Itens
+- Tooltit na lista de pedidos
+- Editar pedidos não enviados
+- Excluir pedidos não enviados
+- Cadastro de usuário
+- *Cadastro de clientes

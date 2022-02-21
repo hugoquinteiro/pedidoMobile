@@ -33,3 +33,18 @@ body{
   right: 5px;
   top: 10px;
 }
+
+.fa-share-square{
+  color:tomato
+}
+.fa-check{
+  color: blueviolet;
+}
+.fa-check-double{
+  color: blue;
+}
+
+.formartNumber {
+  text-align: right;
+  padding: 2px;
+}

@@ -1,6 +1,8 @@
 console.log('Pedido Carregou')
 var myModal = new bootstrap.Modal(document.getElementById('addItemModal'), {})
 
+var tableItens = document.getElementById('tableItens')
+
 function loadFormItem(codprod){
   let tbody = document.getElementById('tbodyItens')
   let itens = document.getElementById('btnAdd-'+codprod)
@@ -92,6 +94,8 @@ function salvarPedido(){
 
 function atualizaTableItens (arrItens) {
   tbodyItens.innerHTML=''
+  let totalped = document.getElementById('totalped') 
+  var total = 0
   //Carregando linha de item na tabela
   arrItens.forEach(el => {
     //console.log(el)
@@ -105,14 +109,23 @@ function atualizaTableItens (arrItens) {
     let td_vlrUnit = tr.insertCell()
     let td_qtd = tr.insertCell()
     let td_vlrTotal = tr.insertCell()
+    let td_delete = tr.insertCell()
   
     td_codprod.innerText = item[0]
     td_descrprod.innerText = item[1]
     td_vlrUnit.innerText = item[3].toLocaleString('pt-br', {minimumFractionDigits: 2, maximumFractionDigits:2})
     td_qtd.innerText = item[2]
     td_vlrTotal.innerText = (item[3] * item[2]).toLocaleString('pt-br', {minimumFractionDigits: 2, maximumFractionDigits:2})
-  
+    td_vlrTotal.setAttribute ("class", "formartNumber")
+    td_vlrUnit.setAttribute ("class", "formartNumber")
+    td_qtd.setAttribute ("class", "formartNumber")
+    td_delete.innerHTML = `<span><i class="fa-solid fa-trash-can">X</i></span>`
+    total+=(item[3] * item[2])
   });
+  console.log('Total Itens', total)
+  totalped.innerHTML = total.toLocaleString('pt-br', {minimumFractionDigits: 2, maximumFractionDigits:2})
+
+
 }
 
 function loadIndex(){
@@ -149,7 +162,7 @@ function loadIndex(){
           default:
             tipoIcone = 'bug'
       }
-      td_icone.innerHTML = `<i class="fas fa-${tipoIcone}" id="status" key="${el.id}" color="blue" onclick="atualizaPedido(${el.id})"></i>`
+      td_icone.innerHTML = `<i class="fas fa-${tipoIcone}" id="status" key="${el.id}"  onclick="atualizaPedido(${el.id})"></i>`
     })
  
   })
@@ -165,6 +178,7 @@ function atualizaPedido(idPedido) {
   })
   .catch(err =>{alert('Erro no Status do Pedido',err)})
 }
+
 
 //JQuery para tratar campo de valor com tag pattern
 $(document).on('keydown', 'input[pattern]', function(e){

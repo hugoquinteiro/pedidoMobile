@@ -45,11 +45,6 @@ var insere = async function insertCustomer(cab, itens){
 module.exports = insere
 
 
-//busca().then(x => console.log(x))
-//Mais simples
-//listar().then(x => console.log(x))
-
-
 /* Deu Certo
 	listar().then(x => x.map(a => a.nome))
 		.then(nome => console.log(nome))
