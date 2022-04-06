@@ -4,7 +4,11 @@ CREATE TABLE empresa (
   CONSTRAINT pk_codemp PRIMARY KEY (codemp)
 );
 --SELECT codemp, razaoabrev as nomeemp FROM tsiemp WHERE codemp IN (2,12,13)
-
+/*
+Insert into EMPRESA (CODEMP,NOMEEMP) values ('2','MCR - SC');
+Insert into EMPRESA (CODEMP,NOMEEMP) values ('12','VLS - SP');
+Insert into EMPRESA (CODEMP,NOMEEMP) values ('13','VLS - RJ');
+*/
 
 DROP TABLE usuario;
 CREATE TABLE usuario (
@@ -15,7 +19,7 @@ CREATE TABLE usuario (
   senha CHARACTER VARYING(20),
   CONSTRAINT pk_id PRIMARY KEY (id)
 );
--- SELECT rownum as id, apelido as login,  apelido, codvend, '123' as senha FROM tgfven WHERE AD_ENVMOBILE='S';
+-- SELECT rownum as id, AD_LOGINMOBILE as login,  apelido, codvend, '123' as senha FROM tgfven WHERE AD_ENVIAMOBILE='S';
 
 DROP TABLE CLIENTE;
 CREATE TABLE cliente (
@@ -30,6 +34,7 @@ CODEMP INTEGER,
 CONSTRAINT pk_codparc PRIMARY KEY (codparc)
 );
 --SELECT codparc, nomeparc, razaosocial, cgc_cpf, codtab, CODVEND, COALESCE((SELECT sugtipnegsaid FROM TGFCPL WHERE codparc=tgfpar.codparc),1) as tipneg FROM tgfpar WHERE codvend IN (SELECT codvend FROM tgfven WHERE AD_ENVMOBILE='S')
+--insert into cliente VALUES (999,'CLIENTE TESTE', 'RAZAO TESTE', '01234567891', 7,99,1,2)
 
 drop table tabela;
 CREATE TABLE tabela (
@@ -39,6 +44,7 @@ CREATE TABLE tabela (
   codtaborig INTEGER,
   CONSTRAINT pk_nutab PRIMARY KEY (nutab)
 );
+--INSERT INTO TABELA VALUES (99,99,'2022-04-01', 99)
 
 /*
 SELECT nutab, codtab, dtvigor, codtaborig FROM tgftab tab WHERE codtab IN (
@@ -55,6 +61,8 @@ marca CHARACTER VARYING(30),
 referencia CHARACTER VARYING(30),
 codbarra CHARACTER VARYING(13),
 CONSTRAINT pk_produto PRIMARY KEY (codprod));
+--INSERT INTO PRODUTO  VALUES (1,'PRODUTO TESTE', 'MARCA 01', '0.1.2.3.4.5','789000123456' )
+
 /* 
 SELECT CODPROD, DESCRPROD, REFERENCIA, (SELECT CODBARRA FROM TGFBAR WHERE CODPROD=TGFPRO.CODPROD) AS CODBARRA, MARCA 
 FROM TGFPRO WHERE CODPROD IN (
@@ -74,7 +82,7 @@ CREATE TABLE ITTABELA (
   CONSTRAINT fk_ittabela_produto FOREIGN KEY (codprod)
     REFERENCES produto (codprod) MATCH SIMPLE ON UPDATE CASCADE ON DELETE NO ACTION
 );
-
+--INSERT INTO ITTABELA VALUES (99,1,88.59)
 /*
 SELECT nutab, codprod, replace(vlrvenda,',','.') as vlrvenda FROM tgfexc
 WHERE nutab IN (
@@ -102,6 +110,7 @@ SELECT CODEMP, CODPROD, RESERVADO, ESTOQUE FROM TGFEST
 WHERE TIPO='P' AND CODLOCAL=2 AND CODEMP IN (2,12,13)
 AND codprod IN ( SELECT codprod FROM tgfpro WHERE  ATIVO='S' AND AD_ION_ENVIA='S')
 */
+--INSERT INTO ESTOQUE VALUES (2,1,0,100)
 
 ------------------- TABELAS DE PEDIDOS ----------------
 DROP TABLE pedido;

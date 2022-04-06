@@ -15,7 +15,7 @@ const client = async function connect() {
 
   const { Pool } = require('pg');
   const pool = new Pool({
-      connectionString: process.env.DATABASE_URL || 'postgres://postgres:postgres@localhost:5432/uhgo'
+      connectionString: process.env.DATABASE_URL || 'postgres://postgres:postgres@localhost:5432/uhgion'
       //connectionString: 'postgres://postgres:postgres@localhost:5432/estudo',
       ,min:2
       ,max:10 //Funcionou, após X conexões ele trava **Falta encontrar solução para fechar conexão
