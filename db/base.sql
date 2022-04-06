@@ -108,7 +108,14 @@ CREATE TABLE ESTOQUE (
 /*
 SELECT CODEMP, CODPROD, RESERVADO, ESTOQUE FROM TGFEST 
 WHERE TIPO='P' AND CODLOCAL=2 AND CODEMP IN (2,12,13)
-AND codprod IN ( SELECT codprod FROM tgfpro WHERE  ATIVO='S' AND AD_ION_ENVIA='S')
+AND codprod IN ( SELECT DISTINCT codprod FROM tgfexc
+                WHERE nutab IN (
+                    SELECT nutab  FROM tgftab tab WHERE codtab IN (
+                    SELECT DISTINCT codtab FROM tgfpar WHERE codvend IN (SELECT codvend FROM tgfven WHERE AD_ENVIAMOBILE='S')
+                    ) AND dtvigor=(SELECT MAX(dtvigor) FROM tgftab WHERE codtab=tab.codtab)
+                ) 
+                AND codprod IN ( SELECT codprod FROM tgfpro WHERE  ATIVO='S' AND AD_ION_ENVIA='S')
+)
 */
 --INSERT INTO ESTOQUE VALUES (2,1,0,100)
 

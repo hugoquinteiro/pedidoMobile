@@ -8,6 +8,12 @@ const insertPedido = require('./pgsql/insertPedido')
 const update = require('./pgsql/update')
 const portalocal = 8001
 const sincPedido = require('./api/sincPedido')
+const consulta = require('./api/DbExplorerSP')
+const atualizaProdBD = require('./pgsql/insertUpdateProduto')
+const atualizaPrecoBD = require('./pgsql/insertUpdatePreco')
+const atulizaPrecoItemBD = require('./pgsql/insertUpdatePrecoItem')
+const atualizaEstoque = require('./pgsql/insertUpdateEstoque')
+const atualizaCliente = require('./pgsql/insertUpdateCliente')
 
 
 // Estou dizendo para o Express usar o EJS como View engine
@@ -81,7 +87,6 @@ app.get('/pedidocabecalho', (req, res) => {
 
 //Pedido
 app.get(`/pedido/:id`,(req, res) => {
-  console.log('codparc esta aqui',req.params.id)
   if(req.session.login){
       req.session.cliente = req.params.id
       var query = 
@@ -126,9 +131,7 @@ app.post('/gravarItem', (req, res) => {
 //Salvar Pedido
 app.post('/salvarPedido', (req, res) => {
   let dtcria = new Date()
-  //console.log(req.session.cliente, req.session.vendas)
   var query = `SELECT codemp FROM cliente WHERE codparc=${req.session.cliente};`
-  //console.log(req.session.login[0].codvend, req.session.login[0].id)
   selectFull(query).then(codemp =>{
     let cab = {idlogin:req.session.login[0].id,
                dtcria: dtcria,
@@ -152,6 +155,73 @@ app.post('/salvarPedido', (req, res) => {
     req.session.vendas = []  
   })
   .catch(err =>{console.log(err)})
+})
+
+//Sincronização manual inicialmente
+app.get('/sincro', (req,res) =>{
+  //Sincronização de usuário e empresa ainda esta manual
+  
+  const tgfpro = `SELECT CODPROD, DESCRPROD, MARCA, REFERENCIA, (SELECT CODBARRA FROM TGFBAR WHERE CODPROD=TGFPRO.CODPROD) AS CODBARRA 
+                  FROM TGFPRO WHERE CODPROD IN (
+                    SELECT distinct codprod FROM tgfexc WHERE nutab IN (
+                    (SELECT nutab FROM TGFTAB TAB WHERE codtab IN (SELECT DISTINCT codtab FROM tgfpar WHERE codvend IN (SELECT codvend FROM tgfven WHERE AD_ENVIAMOBILE='S')) AND dtvigor=(SELECT MAX(dtvigor) FROM tgftab WHERE codtab=tab.codtab))
+                    )
+                  ) AND ATIVO='S' AND AD_ION_ENVIA='S'
+                  `
+const tgftab = `SELECT nutab, codtab, to_char(dtvigor,'YYYY-MM-DD') AS dtvigor, codtaborig FROM tgftab tab WHERE codtab IN (
+                SELECT DISTINCT codtab FROM tgfpar WHERE codvend IN (SELECT codvend FROM tgfven WHERE AD_ENVIAMOBILE='S')
+                ) AND dtvigor=(SELECT MAX(dtvigor) FROM tgftab WHERE codtab=tab.codtab)
+                `
+const tgfexc = `SELECT nutab, codprod, replace(vlrvenda,',','.') as vlrvenda FROM tgfexc
+                WHERE nutab IN (
+                    SELECT nutab  FROM tgftab tab WHERE codtab IN (
+                    SELECT DISTINCT codtab FROM tgfpar WHERE codvend IN (SELECT codvend FROM tgfven WHERE AD_ENVIAMOBILE='S')
+                    ) AND dtvigor=(SELECT MAX(dtvigor) FROM tgftab WHERE codtab=tab.codtab)
+                ) 
+                AND codprod IN ( SELECT codprod FROM tgfpro WHERE  ATIVO='S' AND AD_ION_ENVIA='S')
+                `
+const tgfest = `SELECT CODEMP, CODPROD, RESERVADO, ESTOQUE FROM TGFEST 
+                WHERE TIPO='P' AND CODLOCAL=2 AND CODEMP IN (2,12,13) AND codparc=0
+                AND codprod IN ( SELECT DISTINCT codprod FROM tgfexc
+                                WHERE nutab IN (
+                                    SELECT nutab  FROM tgftab tab WHERE codtab IN (
+                                    SELECT DISTINCT codtab FROM tgfpar WHERE codvend IN (SELECT codvend FROM tgfven WHERE AD_ENVIAMOBILE='S')
+                                    ) AND dtvigor=(SELECT MAX(dtvigor) FROM tgftab WHERE codtab=tab.codtab)
+                                ) 
+                                AND codprod IN ( SELECT codprod FROM tgfpro WHERE  ATIVO='S' AND AD_ION_ENVIA='S')
+                )
+                `
+const tgfpar = `SELECT codparc, nomeparc, razaosocial, cgc_cpf, CODVEND , codtab
+                ,COALESCE((SELECT sugtipnegsaid FROM TGFCPL WHERE codparc=tgfpar.codparc),1) as tipneg, codemppref 
+                FROM tgfpar 
+                WHERE codvend IN (SELECT codvend FROM tgfven WHERE AD_ENVIAMOBILE='S') 
+                `
+                
+
+  consulta(tgfpro).then( resp1 => {
+    atualizaProdBD(resp1).then(pro => { console.log('Itens:', pro)
+      consulta(tgftab).then( resp2 => {
+        atualizaPrecoBD(resp2).then(tab => { console.log('Tabelas:', tab)
+          consulta(tgfexc).then(resp3 =>{
+            atulizaPrecoItemBD(resp3).then(ite => {console.log('Preço Item:', ite)
+              consulta(tgfest).then(resp4 =>{
+                atualizaEstoque(resp4).then( est =>{console.log('est: ', est)
+                  consulta(tgfpar).then(resp5 => {
+                    atualizaCliente(resp5).then( par => {console.log('Cli:', par)
+                    })
+                  })
+                })
+              })
+            })
+          })
+        })
+      })
+    })
+  })
+
+
+
+  res.send('200')
 })
 
 app.get('/listaPedidos',(req,res) =>{

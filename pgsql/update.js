@@ -9,4 +9,3 @@ var update = async function (query){
 }
 
 module.exports = update
-
