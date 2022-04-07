@@ -42,6 +42,7 @@ CREATE TABLE tabela (
   codtab INTEGER,
   dtvigor date,
   codtaborig INTEGER,
+  percentual DECIMAL(12,2)
   CONSTRAINT pk_nutab PRIMARY KEY (nutab)
 );
 --INSERT INTO TABELA VALUES (99,99,'2022-04-01', 99)

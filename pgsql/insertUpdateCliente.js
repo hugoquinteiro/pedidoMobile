@@ -3,7 +3,7 @@ const db = require('./db2')
 var insup = async function insertuPDATE(reg){
     
     arr = []
-    console.log('tam Estoque:', reg.length, reg)
+
     for (let i = 0; i < reg.length; i++) {
         let testa = await db.query(`SELECT COUNT(1) as conta FROM (
                                     SELECT 1 AS conta FROM cliente WHERE codparc = ${reg[i][0]}

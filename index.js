@@ -90,12 +90,14 @@ app.get(`/pedido/:id`,(req, res) => {
   if(req.session.login){
       req.session.cliente = req.params.id
       var query = 
-          `SELECT tab.codprod, pro.descrprod, tab.vlrvenda, pro.marca, (est.estoque-est.reservado) as estoque
-           FROM ittabela as tab 
-           INNER JOIN produto as pro ON (tab.codprod=pro.codprod) 
-           LEFT JOIN ESTOQUE AS est ON (tab.codprod=est.codprod) 
-           WHERE tab.nutab=(SELECT nutab FROM TABELA WHERE codtab=(SELECT codtab FROM cliente WHERE codparc=${req.params.id}))
-           AND est.codemp = (SELECT codemp FROM cliente WHERE codparc=${req.params.id})
+          `SELECT t1.codprod, pro.descrprod, ROUND(COALESCE(t2.vlrvenda,t1.vlrvenda*((100 + tab.percentual)/100)),2) as vlrvenda,  pro.marca, (est.estoque-est.reservado) as estoque
+          FROM tabela tab
+          INNER JOIN ittabela t1 ON (t1.nutab=(SELECT nutab FROM tabela WHERE codtab=tab.codtaborig))
+          LEFT JOIN ittabela t2 ON ((t2.nutab=(SELECT nutab FROM tabela WHERE codtab=tab.codtab)) AND t2.codprod = t1.codprod)
+          LEFT JOIN produto pro ON (t1.codprod = pro.codprod)
+          LEFT JOIN ESTOQUE est ON (t1.codprod=est.codprod) 
+          AND est.codemp = (SELECT codemp FROM cliente WHERE codparc=${req.params.id})
+          WHERE tab.codtab=(SELECT codtab FROM cliente WHERE codparc=${req.params.id})
            ORDER BY pro.marca, pro.descrprod;`
       selectFull(query).then(produtos => {
         //console.log(produtos)
@@ -168,7 +170,8 @@ app.get('/sincro', (req,res) =>{
                     )
                   ) AND ATIVO='S' AND AD_ION_ENVIA='S'
                   `
-const tgftab = `SELECT nutab, codtab, to_char(dtvigor,'YYYY-MM-DD') AS dtvigor, codtaborig FROM tgftab tab WHERE codtab IN (
+const tgftab = `SELECT nutab, codtab, to_char(dtvigor,'YYYY-MM-DD') AS dtvigor, codtaborig, percentual
+                FROM tgftab tab WHERE codtab IN (
                 SELECT DISTINCT codtab FROM tgfpar WHERE codvend IN (SELECT codvend FROM tgfven WHERE AD_ENVIAMOBILE='S')
                 ) AND dtvigor=(SELECT MAX(dtvigor) FROM tgftab WHERE codtab=tab.codtab)
                 `
@@ -192,7 +195,7 @@ const tgfest = `SELECT CODEMP, CODPROD, RESERVADO, ESTOQUE FROM TGFEST
                 )
                 `
 const tgfpar = `SELECT codparc, nomeparc, razaosocial, cgc_cpf, CODVEND , codtab
-                ,COALESCE((SELECT sugtipnegsaid FROM TGFCPL WHERE codparc=tgfpar.codparc),1) as tipneg, codemppref 
+                ,COALESCE((SELECT sugtipnegsaid FROM TGFCPL WHERE codparc=tgfpar.codparc),1) as tipneg, COALESCE(codemppref,0) codemppref
                 FROM tgfpar 
                 WHERE codvend IN (SELECT codvend FROM tgfven WHERE AD_ENVIAMOBILE='S') 
                 `
@@ -236,6 +239,7 @@ app.get('/listaPedidos',(req,res) =>{
 })
 
 app.post('/sincPedido', (req, res) => {
+  console.log('Pedido:****', req.body.pedido)
   sincPedido(req.body.pedido)
   .then(resapi => {
     console.log(resapi.nunota.$)
