@@ -5,6 +5,7 @@ const app = express();
 const select = require('./pgsql/select')
 const selectFull = require('./pgsql/selectFull')
 const insertPedido = require('./pgsql/insertPedido')
+const insertCliente = require('./pgsql/insertCliente')
 const update = require('./pgsql/update')
 const portalocal = 8001
 const sincPedido = require('./api/sincPedido')
@@ -26,7 +27,7 @@ app.use(express.static('public'));
                     saveUninitialized: true}))
 
 //Carregando bodyParser
-  app.use(bodyParser.urlencoded({extended:true}))
+  app.use(bodyParser.urlencoded({extended:false})) //alterando pra False na implementação de clientes
   app.use(bodyParser.json())
 
 // Rotas
@@ -250,11 +251,27 @@ app.post('/sincPedido', (req, res) => {
   
 })
 
-// app.listen(process.env.PORT || portalocal,
-//           ()=>{console.log("App rodando em ", process.env.PORT || portalocal);
-//               })
 
-// for an express app, the server is returned from the `.listen()` method
+app.get('/cliente',(req,res) =>{
+  //console.log('lista pedidos...')
+  let query = `SELECT codparc, nomeparc, razaosocial, cgc_cpf FROM cliente WHERE codvend= ${req.session.login[0].codvend};`
+  selectFull(query).then(result =>{
+    let cliente = result
+    res.render('cliente', {clientes: cliente})
+  })
+  .catch(err => {console.log(err)})
+})
+
+app.post('/incluircliente',(req, res) => {
+  req.body.codvend = req.session.login[0].codvend
+  insertCliente(req.body)
+  .then( retorno =>{res.send('OK - 200')})
+  //.catch( err => res.send('Erro', err))
+  
+})
+
+
+
 let server = app.listen(process.env.PORT || portalocal,
             ()=>{console.log("App rodando em ", process.env.PORT || portalocal);
                 })

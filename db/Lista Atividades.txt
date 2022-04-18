@@ -6,3 +6,8 @@
 - Excluir pedidos não enviados
 - Cadastro de usuário
 - *Cadastro de clientes
+
+
+
+Exemplos:
+https://pedidomobile.com/

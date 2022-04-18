@@ -1,0 +1,103 @@
+<%- include ('./partials/header.ejs') %>
+<body>
+    <%- include ('./partials/navbar.ejs') %>
+<div class="container">
+    <h1 class="mb-5">Clientes</h1>
+
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Cadastrar
+    </button>
+  
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+        <form action="/incluircliente" method="POST">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Cadastrar Novo Cliente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-default">Nome</span>
+                        <input type="text" class="form-control" name="nomeparc">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-default">Razão Social</span>
+                        <input type="text" class="form-control" name="razaosocial">
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-default">CNPJ</span>
+                        <input type="text" class="form-control" name="cnpj">
+                        <span class="input-group-text" id="inputGroup-sizing-default">I.E.</span>
+                        <input type="text" class="form-control" name="ie">
+                    </div>
+        
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="inputGroup-sizing-default">CEP</span>
+                            <input type="text" class="form-control" name="cep">
+                        </div>
+                        <div class="col-3">
+                            <select class="form-select" id="inputGroupSelect01" name="tipoender">
+                                <option selected>Tipo</option>
+                                <option value="RUA">Rua</option>
+                                <option value="AV">Av</option>
+                                <option value="LGO">Lgo</option>
+                                <option value="PCA">Pca</option>
+                            </select>
+                        </div>
+                        <div class="col-9">
+                            <input type="text" class="form-control" name="endereco">    
+                        </div>
+                        <div class="col-2">
+                            <span class="input-group-text">Nro</span>
+                        </div>
+                        <div class="col-3">
+                            <input type="text" class="form-control" name="numero">
+                        </div>
+                        <div class="col-2">
+                            <span class="input-group-text">Compl</span>
+                        </div>
+                        <div class="col-5">
+                            <input type="text" class="form-control" name="complemento">
+                        </div>
+        
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </div>
+                </div>
+        </form>    
+    </div>
+    </div>
+
+  <hr> <!-- Separador do Modal -->
+
+    <table class="table">
+        <thead class="table-dark">
+          <th>Cod</th>
+          <th>Razão Social</th>
+          <th>Fantasia</th>
+          <th>CNPJ</th>
+        </thead>
+        <tbody>
+            <%clientes.forEach(function(val,i) { %>
+            <tr>
+                <td><%=clientes[i].codparc%></td>
+                <td><%=clientes[i].razaosocial%></td>
+                <td><%=clientes[i].nomeparc%></td>
+                <td><%=clientes[i].cgc_cpf%></td>
+            </tr>
+            <%}) %>
+        </tbody>
+      </table>
+
+
+</div>    
+</body>
+<%- include ('./partials/footer.ejs') %>

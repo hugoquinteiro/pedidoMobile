@@ -5,8 +5,8 @@
         <h1 class="mb-5">Dados do Cliente </h1>
 
         <%cliente.forEach((valor, i) => { %>   
-    <div class="row mb-1">
-        <div class="btn btn-primary btn-lg btn-block" type="button" data-bs-toggle="offcanvas" data-bs-target="#cli<%=cliente[i].codparc%>" aria-controls="offcanvasBottom"><%=cliente[i].nomeparc %></div>
+    <div class="row mb-0">
+        <div class="btn btn-outline-dark btn-lg btn-block" type="button" data-bs-toggle="offcanvas" data-bs-target="#cli<%=cliente[i].codparc%>" aria-controls="offcanvasBottom"><%=cliente[i].nomeparc %></div>
 
         <div class="offcanvas offcanvas-bottom" tabindex="-1" id="cli<%=cliente[i].codparc%>" aria-labelledby="offcanvasBottomLabel">
             <div class="offcanvas-header">
@@ -14,7 +14,7 @@
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body small">
-                <div class="row">CNPJ: <%=cliente[i].codparc%></div>
+                <div class="row">Código: <%=cliente[i].codparc%></div>
                 <div class="row">CNPJ: <%=cliente[i].cgc_cpf %></div>
                 <div class="row">Tipo Neg: <%=cliente[i].tipneg %></div>
                 <div class="row">Tabela: <%=cliente[i].codtab %></div>
