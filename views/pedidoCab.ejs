@@ -1,29 +1,105 @@
 <%- include ('./partials/header.ejs') %>
 <body>
     <%- include ('./partials/navbar.ejs') %>
-<div class="container">
+<div class="container-fluid">
         <h1 class="mb-5">Dados do Cliente </h1>
 
         <%cliente.forEach((valor, i) => { %>   
-    <div class="row mb-0">
-        <div class="btn btn-outline-dark btn-lg btn-block" type="button" data-bs-toggle="offcanvas" data-bs-target="#cli<%=cliente[i].codparc%>" aria-controls="offcanvasBottom"><%=cliente[i].nomeparc %></div>
-
-        <div class="offcanvas offcanvas-bottom" tabindex="-1" id="cli<%=cliente[i].codparc%>" aria-labelledby="offcanvasBottomLabel">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasBottomLabel"><%=cliente[i].razaosocial%></h5>
-                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body small">
-                <div class="row">Código: <%=cliente[i].codparc%></div>
-                <div class="row">CNPJ: <%=cliente[i].cgc_cpf %></div>
-                <div class="row">Tipo Neg: <%=cliente[i].tipneg %></div>
-                <div class="row">Tabela: <%=cliente[i].codtab %></div>
+    <div class="row m-2">
+        <!-- <div class="btn btn-outline-dark btn-lg btn-block" type="button" data-bs-toggle="offcanvas" data-bs-target="#cli<%=cliente[i].codparc%>" aria-controls="offcanvasBottom"><%=cliente[i].nomeparc %></div> -->
+        <div class="btn btn-light btn-icon-split"  data-bs-toggle="offcanvas" data-bs-target="#cli<%=cliente[i].codparc%>" aria-controls="offcanvasBottom">
+            <span class="text"><%=cliente[i].nomeparc %></span>
+        </div>
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="cli<%=cliente[i].codparc%>" aria-labelledby="offcanvasBottomLabel">
+            <div class="offcanvas-body">
+                <!-- <div class="row">Código: <%=cliente[i].codparc%></div>
+                <div class="row">CNPJ: <%=cliente[i].cgc_cpf %></div> -->
+                <!-- <div class="row">Tipo Neg: <%=cliente[i].tipneg %></div> -->
+                <!-- <div class="row">Tabela: <%=cliente[i].codtab %></div> -->
                 <!-- <button class="btn btn-success align-self-end" onclick="selecionaCliente(<%=cliente[i].codparc%>)" type="button">Continuar -></button> -->
+                <!-- Content Row -->
+                <div class="row">
+    
+                    <!-- Dados do cliente -->
+                    <div class="col-md-12 mb-4">
+                        <div class="card border-left-primary shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-left">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                            CNPJ: <%=cliente[i].cgc_cpf %> (<%=cliente[i].codparc%>)</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800"><%=cliente[i].razaosocial%></div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Tipo de Negociação -->
+                    <div class="col-md-12 mb-4">
+                        <div class="card border-left-success shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                            Tipo Negociação</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800"><div class="row"><%=cliente[i].tipneg %> - 30/60/90DD **</div></div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <!-- Tabela -->
+                    <div class="col-md-12 mb-4">
+                        <div class="card border-left-info shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Condições de Preço
+                                        </div>
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col-auto">
+                                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">Tabela: <%=cliente[i].codtab %></div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="progress progress-sm mr-2">
+                                                    <div class="progress-bar bg-info" role="progressbar"
+                                                        style="width: 50%" aria-valuenow="50" aria-valuemin="0"
+                                                        aria-valuemax="100"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+    
+                </div>
+    
+                <!-- Content Row -->                    
 
-                <a href="/pedido/<%=cliente[i].codparc%>" class="btn btn-success" id="confirmaCliente">Continuar <i class="far fa-hand-point-right"></i></a>
+                
+            </div>    
+            
+            <div class="d-grid gap-2 bottom mb-4">
+                <a href="/pedido/<%=cliente[i].codparc%>" class="btn btn-success" id="XconfirmaCliente">Seguir <i class="far fa-hand-point-right"></i></a>
             </div>
+
 
         </div>        
+
+
     </div>                 
         <% }) %>   
 </div>    

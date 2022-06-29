@@ -46,7 +46,7 @@ let cab = async function(idPedido){
     .catch(err => console.log('Query gerou erro:',err))
  
   }catch(err){ 
-    console.log('Erro objPedido:', err)
+    console.log('Erro objPedido(ObjPedido.js):', err)
 
   }
 }

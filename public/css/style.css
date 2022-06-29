@@ -29,9 +29,9 @@ body{
 }
 
 #confirmaCliente {
-  position: absolute;
-  right: 5px;
-  top: 10px;
+  /* position: absolute; */
+  /* right: 5px;
+  top: 10px; */
 }
 
 .fa-share-square{
