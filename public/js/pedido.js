@@ -1,10 +1,10 @@
 console.log('Pedido Carregou')
 var myModal = new bootstrap.Modal(document.getElementById('addItemModal'), {})
 
-var tableItens = document.getElementById('tableItens')
+var tbodyItens = document.getElementById('tbodyItens')
 
 function loadFormItem(codprod){
-  let tbody = document.getElementById('tbodyItens')
+  //let tbody = document.getElementById('tbodyItens')
   let itens = document.getElementById('btnAdd-'+codprod)
   //console.log('itens', itens.getAttribute('key'))
   let key = itens.getAttribute('key')
@@ -93,7 +93,8 @@ function salvarPedido(){
 
 
 function atualizaTableItens (arrItens) {
-  tbodyItens.innerHTML=''
+  //tbodyItens.innerHTML=''
+  const btnPedido = document.getElementById('btnPedido')
   let totalped = document.getElementById('totalped') 
   var total = 0
   //Carregando linha de item na tabela
@@ -122,8 +123,9 @@ function atualizaTableItens (arrItens) {
     td_delete.innerHTML = `<span><i class="fa-solid fa-trash-can">X</i></span>`
     total+=(item[3] * item[2])
   });
-  console.log('Total Itens', total)
+  console.log('Atualizando Totais', total)
   totalped.innerHTML = total.toLocaleString('pt-br', {minimumFractionDigits: 2, maximumFractionDigits:2})
+  btnPedido.innerHTML =`<i class="fas fa-dollar-sign"></i> ${total.toLocaleString('pt-br', {minimumFractionDigits: 2, maximumFractionDigits:2})}` 
 
 
 }

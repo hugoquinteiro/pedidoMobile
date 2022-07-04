@@ -2,7 +2,32 @@
 <body>
     <%- include ('./partials/navbar.ejs') %>
 
-  <div class="container">
+  <div class="container-fluid">
+
+  <!--  Cabeçalho do Pedido -->
+  <div class="container-fluid sticky-top cabPed" >
+    <div class="row" id="cabPed"> 
+      <div class="col-6 col-sm-6 col-lg-3  mt-2">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Modal01" id='btnPedido'>
+          <i class="fas fa-dollar-sign"></i> 0.00</button>
+      </div>
+      <div class="col-6 col-sm-6 col-lg-3  mt-2">
+        <button type="button" class="btn btn-success" id="salvarPedido" onclick="salvarPedido()">
+          <i class="fas fa-print"></i>
+          Salvar
+        </button>
+      </div>
+      <div class="col-9 align-self-center">
+        <input class="form-control mt-2" type="search" placeholder="Busca..." aria-label="Search" id="search"  onkeyup="buscaItem()">
+      </div>
+      <div class="col-3 align-self-center">
+        <button class="btn" onclick="limpaBusca()"><i class="fas fa-redo"></i></button>
+      </div>
+    </div>
+    <hr>
+  </div>
+
+    <!-- Lista de marcas / itens -->
     <div class="accordion mt-3" id="accordion">
       <%  var v_marca ='xx'
       produto.forEach(function(val,indice) {
@@ -42,7 +67,7 @@
   </div><!--  fim do container -->
 
 
-<br><br><br><br>
+<!-- <br><br><br><br>
 
     <span> Novos dados... </span><br>
     <i class="fa-solid fa-delete-left">XXXX</i>
@@ -75,7 +100,7 @@
           </tfoot>
         </table>
       </div>
-    </div>
+    </div> -->
 
 
     <!-- Modal -->
@@ -110,6 +135,55 @@
         </div>
       </div>
     </div>
+
+<!-- Modal da lista de Pedido -->
+<div class="modal fade" id="Modal01" tabindex="0" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ModalLabel">Itens do Pedido</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <table class="table-responsive" id="tableItens">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Descrição</th>
+                <th scope="col">Preço</th>
+                <th scope="col">Qtd</th>
+                <th scope="col">Total</th>
+                <th scope="col">-</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyItens">
+            </tbody>  
+            <tfoot id="tfoot">
+              <tr class="bg-secondary text-white">
+                <td colspan="4">Total:</td>
+                <td id="totalped">0.00</td>
+                <td></td>
+              </tr>
+              <tr class="bg-dark text-white">
+                <td colspan="2">Desconto:</td>
+                <td id="vlrDescto">0.00</td>
+                <td id="totalLiq">0.00</td>
+                <td></td>
+              </tr>            
+            </tfoot>
+          </table>
+        </div>
+        <div class="modal-footer">
+         <div class="input-group mb-3">
+          <button class="button btn-success mx-2" id="loadDesc" onclick="updateTotal()"> <i class="fas fa-sync"></i> </button>
+          <button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal" onclick="updateTotal()">Continuar</button>
+         </div>
+  
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Fim Modal -->    
 
   
 </body>
