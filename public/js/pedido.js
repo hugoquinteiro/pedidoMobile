@@ -93,7 +93,7 @@ function salvarPedido(){
 
 
 function atualizaTableItens (arrItens) {
-  //tbodyItens.innerHTML=''
+  tbodyItens.innerHTML=''
   const btnPedido = document.getElementById('btnPedido')
   let totalped = document.getElementById('totalped') 
   var total = 0
@@ -120,7 +120,7 @@ function atualizaTableItens (arrItens) {
     td_vlrTotal.setAttribute ("class", "formartNumber")
     td_vlrUnit.setAttribute ("class", "formartNumber")
     td_qtd.setAttribute ("class", "formartNumber")
-    td_delete.innerHTML = `<span><i class="fa-solid fa-trash-can">X</i></span>`
+    td_delete.innerHTML = `<button class="btnDelete btn btn-danger"><i class="fas fa-trash"></i></button>`
     total+=(item[3] * item[2])
   });
   console.log('Atualizando Totais', total)
@@ -129,6 +129,19 @@ function atualizaTableItens (arrItens) {
 
 
 }
+
+//Função DELETE ITEM do PEDIDO
+function deleteItem(e) {
+  if(!e.target.classList.contains("btnDelete")) {
+    return;
+  }
+
+  const btnDel = e.target
+  btnDel.closest('tr').remove()
+  //updateTotal()
+  console.log('Removendo Item')
+}
+tableItens.addEventListener('click', deleteItem)
 
 function loadIndex(){
   console.log('Carregando pedidos')

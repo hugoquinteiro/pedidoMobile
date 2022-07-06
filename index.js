@@ -115,7 +115,8 @@ app.post('/gravarItem', (req, res) => {
   //console.log('chegou gravar Item')
   if (req.session.vendas) {
     req.session.vendas.forEach((el,i) => {
-      //console.log(el.codprod , req.body.dados.codprod)
+      //console.log(el.codprod , req.body.dados.codprod, 'TRUE?:', el.codprod == req.body.dados.codprod)
+      //console.log('Antes:',req.session.vendas)
       if (el.codprod == req.body.dados.codprod) {
         req.session.vendas.splice(i,1);
       }
@@ -125,6 +126,8 @@ app.post('/gravarItem', (req, res) => {
     req.session.vendas = []
     req.session.vendas.push(req.body.dados)
   }
+
+  //console.log('Pedidos:',req.session.vendas)
   //console.log(req.session.vendas)
   
   //toda requisição precisa de uma resposta, sem isso estava travando o sistema
