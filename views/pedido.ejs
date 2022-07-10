@@ -47,9 +47,38 @@
         <div class="collapse" id="<%= produto[indice].marca.replace(' ','') %>" data-parent="#accordion">
           <div class="container-fluid">
               <div class="row">
-                    <div class="card-body col-12 col-lg-6 bg-ligth" id="itens">
+                    <div class="card-body col-6 bg-ligth" id="itens">
                       <%=produto[indice].descrprod%>
                       <span id="span"><strong>R$ <%=produto[indice].vlrvenda%></strong></span>
+                
+                      <!--Estoque-->
+                      <%
+                      function defEstoque(estoque){
+                        var corEstoque
+                        var perEstoque
+                        if (estoque<=0) {
+                          corEstoque = "danger"    
+                          perEstoque = "15"
+                        } else if (estoque<100) {
+                          corEstoque = "secondary"
+                          perEstoque = "25"
+  
+                        } else if (estoque<200) {
+                          corEstoque = "warning"
+                          perEstoque = "50"
+                        } else {
+                          corEstoque = "success"
+                          perEstoque = "75"
+                        }
+                        return {cor: corEstoque, per:perEstoque}
+                      }
+                      var est = defEstoque(produto[indice].estoque)
+                      %>
+                      <div class="progress mb-2">
+                          <div class="progress-bar progress-bar-striped bg-<%=est.cor%>" role="progressbar" style="width: <%=est.per%>%"
+                              aria-valuenow="<%=est.per%>" aria-valuemin="0" aria-valuemax="100">Estoque: <%=produto[indice].estoque%></div>
+                      </div>
+
                       <button class="btn btn-success" id="btnAdd-<%=produto[indice].codprod%>" onclick="loadFormItem(<%=produto[indice].codprod%>)" key="<%=produto[indice].codprod%>|;<%=produto[indice].descrprod%>|;<%=produto[indice].vlrvenda%>|;<%=produto[indice].estoque%>">+</button>
                     </div>
               </div>
@@ -67,43 +96,7 @@
   </div><!--  fim do container -->
 
 
-<!-- <br><br><br><br>
-
-    <span> Novos dados... </span><br>
-    <i class="fa-solid fa-delete-left">XXXX</i>
-    <div class="container">
-      <div class="row">
-        <button type="button" class="btn btn-primary btn-lg btn-block" onclick="salvarPedido()">Finalizar</button>  
-      </div>
-      
-      <br><br>
-
-      <div class="row">
-        <table class="table table-sm" id="tableItens">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Produto</th>
-              <th scope="col">Unit</th>
-              <th scope="col">Qtd</th>
-              <th scope="col">Total</th>
-              <th scope="col">X</th>
-            </tr>
-          </thead>
-          <tbody id="tbodyItens">
-          </tbody>
-          <tfoot>
-            <tr class="bg-secondary text-white">
-              <td colspan="4">Total:</td>
-              <td id="totalped" class="formartNumber">0.00</td>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
-    </div> -->
-
-
-    <!-- Modal -->
+    <!-- Modal  Inclusão do Item-->
     <div class="modal fade" id="addItemModal" tabindex="-1" role="dialog" aria-labelledby="addItemModalTittle" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -121,15 +114,19 @@
                 <input type="number" class="form-control text-end" id="precoItem" pattern="^\d+(?:\.\d{1,2})?$" step="0.01">
               </div>
             </div>
-            <div class="card" style="width: 18rem;">
-              <!-- <img src="..." class="card-img-top" alt="..."> -->
+            <!-- <div class="card" style="width: 18rem;">
               <div class="card-body">
-                <p class="card-text text-end" id="estInfo"></p>
+                <p class="card-text text-end" id="estInfo">012345</p>
               </div>
-            </div>
+            </div> -->
+            <!-- Estoque -->
+            <div class="progress mb-2">
+              <div class="progress-bar bg-info" role="progressbar" style="width: 90%"
+                  aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" id="estInfo" >valor alterado pedido.js</div>
+            </div>            
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
             <button type="button" class="btn btn-primary" onclick="gravarItem()">Salvar</button>
           </div>
         </div>
@@ -153,7 +150,8 @@
                 <th scope="col">Preço</th>
                 <th scope="col">Qtd</th>
                 <th scope="col">Total</th>
-                <th scope="col">-</th>
+                <th scope="col"><i class="fas fa-trash"></i></th>
+                <th scope="col"><i class="fas fa-edit"></i></th>
               </tr>
             </thead>
             <tbody id="tbodyItens">
@@ -163,13 +161,14 @@
                 <td colspan="4">Total:</td>
                 <td id="totalped">0.00</td>
                 <td></td>
+                <td></td>
               </tr>
-              <tr class="bg-dark text-white">
+              <!-- <tr class="bg-dark text-white">
                 <td colspan="3">Desconto:</td>
                 <td id="vlrDescto">0.00</td>
                 <td id="totalLiq">0.00</td>
                 <td></td>
-              </tr>            
+              </tr>             -->
             </tfoot>
           </table>
         </div>

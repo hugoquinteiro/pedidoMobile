@@ -91,7 +91,8 @@ app.get(`/pedido/:id`,(req, res) => {
   if(req.session.login){
       req.session.cliente = req.params.id
       var query = 
-          `SELECT t1.codprod, pro.descrprod, ROUND(COALESCE(t2.vlrvenda,t1.vlrvenda*((100 + tab.percentual)/100)),2) as vlrvenda,  pro.marca, (est.estoque-est.reservado) as estoque
+          `SELECT t1.codprod, pro.descrprod, ROUND(COALESCE(t2.vlrvenda,t1.vlrvenda*((100 + tab.percentual)/100)),2) as vlrvenda,
+                  pro.marca, ROUND((est.estoque-est.reservado),0) as estoque
           FROM tabela tab
           INNER JOIN ittabela t1 ON (t1.nutab=(SELECT nutab FROM tabela WHERE codtab=tab.codtaborig))
           LEFT JOIN ittabela t2 ON ((t2.nutab=(SELECT nutab FROM tabela WHERE codtab=tab.codtab)) AND t2.codprod = t1.codprod)
@@ -112,7 +113,7 @@ app.get(`/pedido/:id`,(req, res) => {
 
 //Gravar Item
 app.post('/gravarItem', (req, res) => {
-  //console.log('chegou gravar Item')
+  //console.log('chegou',req.body.dados )
   if (req.session.vendas) {
     req.session.vendas.forEach((el,i) => {
       //console.log(el.codprod , req.body.dados.codprod, 'TRUE?:', el.codprod == req.body.dados.codprod)
@@ -121,7 +122,9 @@ app.post('/gravarItem', (req, res) => {
         req.session.vendas.splice(i,1);
       }
     })
-    req.session.vendas.push(req.body.dados)
+    if (!req.body.dados.remove) {
+      req.session.vendas.push(req.body.dados)
+    }
   } else {
     req.session.vendas = []
     req.session.vendas.push(req.body.dados)

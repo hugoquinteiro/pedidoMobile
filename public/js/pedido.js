@@ -18,12 +18,34 @@ function loadFormItem(codprod){
   var estInfo = document.getElementById('estInfo')
   var precoItem = document.getElementById('precoItem')
   var quantidade = document.getElementById('quantidade')
-  var tittle = document.getElementById('addItemModalTittle')  
+  var tittle = document.getElementById('addItemModalTittle')
+  
+  console.log('estInfo',estInfo )
 
   //Verifica se o item já existe no pedido
   //var codprod = item.substring(0, item.indexOf(' -')).trim()
   tittle.innerText = `${codprod} - ${descrprod}`
+  
+  var corEstoque
+  var perEstoque
+  if (estoque<=0) {
+    corEstoque = "danger"    
+    perEstoque = "15"
+  } else if (estoque<100) {
+    corEstoque = "secondary"
+    perEstoque = "25"
+
+  } else if (estoque<200) {
+    corEstoque = "warning"
+    perEstoque = "50"
+  } else {
+    corEstoque = "success"
+    perEstoque = "75"
+  }
   estInfo.innerHTML = estoque
+  estInfo.className = `progress-bar bg-${corEstoque}`
+  estInfo.style = `width: ${perEstoque}%`
+
   quantidade.value = 1
   precoItem.value = preco
   for (let i =0; i < tbodyItens.rows.length; i++){
@@ -79,11 +101,44 @@ function gravarItem(){
   })
 }
 
+//Função DELETE ITEM do PEDIDO
+// function deleteItem(e) {
+//   console.log('target', e)
+//   // if(!e.target.classList.contains("btnDelete")) {
+//   //   return;
+//   // }
+
+//   const btnDel = e.target
+//   //console.log('btnDel', btnDel)
+//   //btnDel.closest('tr').remove()
+//   //updateTotal()
+//   console.log('Removendo Item')
+// }
+// tableItens.addEventListener('click', deleteItem)
+
+function removeItem(codprod){
+  //console.log('removeItem:', codprod)
+  var dadosItem = {
+    codprod : codprod,
+    remove: true
+  }
+
+  axios.post('/gravarItem', {dados: dadosItem})
+  .then(resp => {
+    //console.log('Gravar Item', resp.data)
+    atualizaTableItens(resp.data)
+  })
+  .catch( err => {
+    console.log('erro item: ', err)
+  })
+
+}
+
 function salvarPedido(){
   console.log('Salvar Pedido')
   axios.post('/salvarPedido', {salvar: 'ok'})
   .then(resp => {
-    console.log('Gravar pedido', resp.data)
+    //console.log('Gravar pedido', resp.data)
     window.location.href = '/';
   })
   .catch( err => {
@@ -111,6 +166,7 @@ function atualizaTableItens (arrItens) {
     let td_qtd = tr.insertCell()
     let td_vlrTotal = tr.insertCell()
     let td_delete = tr.insertCell()
+    let td_edit = tr.insertCell()
   
     td_codprod.innerText = item[0]
     td_descrprod.innerText = item[1]
@@ -120,7 +176,8 @@ function atualizaTableItens (arrItens) {
     td_vlrTotal.setAttribute ("class", "formartNumber")
     td_vlrUnit.setAttribute ("class", "formartNumber")
     td_qtd.setAttribute ("class", "formartNumber")
-    td_delete.innerHTML = `<button class="btnDelete btn btn-danger"><i class="fas fa-trash"></i></button>`
+    td_delete.innerHTML = `<button class="btnDelete btn btn-danger" onclick="removeItem(${item[0]})"><i class="fas fa-trash"></i></button>`
+    td_edit.innerHTML = `<button class="btnDelete btn btn-info" data-bs-dismiss="modal" onclick="loadFormItem(${item[0]})"><i class="fas fa-edit"></i></button>`  //"
     total+=(item[3] * item[2])
   });
   console.log('Atualizando Totais', total)
@@ -130,18 +187,6 @@ function atualizaTableItens (arrItens) {
 
 }
 
-//Função DELETE ITEM do PEDIDO
-function deleteItem(e) {
-  if(!e.target.classList.contains("btnDelete")) {
-    return;
-  }
-
-  const btnDel = e.target
-  btnDel.closest('tr').remove()
-  //updateTotal()
-  console.log('Removendo Item')
-}
-tableItens.addEventListener('click', deleteItem)
 
 function loadIndex(){
   console.log('Carregando pedidos')
